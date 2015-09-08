@@ -13,6 +13,8 @@ namespace Vinkla\Climb\Commands;
 
 use League\CLImate\CLImate;
 use Packagist\Api\Client;
+use Stringy\StaticStringy;
+use Stringy\Stringy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -68,7 +70,19 @@ class CheckCommand extends Command
 
         $packages = array_merge($json['require'], $json['require-dev']);
 
-        return $packages;
+        $array = [];
+
+        foreach ($packages as $name => $version) {
+            $string = new Stringy($name);
+
+            if ($string->startsWith('php') || $string->startsWith('ext')) {
+                continue;
+            }
+
+            array_push($array, [$name => $version]);
+        }
+
+        return $array;
     }
 
     /**
