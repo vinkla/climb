@@ -165,6 +165,10 @@ class CheckCommand extends Command
         $new = false;
 
         foreach ($current as $i => $character) {
+            if (!isset($latest[$i])) {
+                break;
+            }
+
             if ($character !== $latest[$i]) {
                 $new = true;
             }
