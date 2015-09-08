@@ -139,7 +139,7 @@ class CheckCommand extends Command
      */
     private function normalize($version)
     {
-        $version = preg_replace('/(v|\^)/', '', $version);
+        $version = preg_replace('/(v|\^|~)/', '', $version);
 
         if (preg_match('/^\d\.\d$/', $version)) {
             $version .= '.0';
