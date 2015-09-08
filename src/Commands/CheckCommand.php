@@ -13,7 +13,6 @@ namespace Vinkla\Climb\Commands;
 
 use League\CLImate\CLImate;
 use Packagist\Api\Client;
-use Stringy\StaticStringy;
 use Stringy\Stringy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

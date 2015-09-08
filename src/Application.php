@@ -11,10 +11,10 @@
 
 namespace Vinkla\Climb;
 
-use Vinkla\Climb\Commands\CheckCommand;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
+use Vinkla\Climb\Commands\CheckCommand;
 
 /**
  * This is the application class.
