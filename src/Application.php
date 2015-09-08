@@ -49,5 +49,4 @@ class Application extends Console
     {
         return [new CheckCommand(), new HelpCommand(), new ListCommand()];
     }
-
 }
