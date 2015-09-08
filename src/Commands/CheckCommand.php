@@ -45,11 +45,15 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $climate = new CLImate();
+
         $packages = $this->getPackages();
 
-        $versions = $this->getVersions($packages);
+        if (count($packages) <= 0) {
+            return $climate->br()->error('We couldn\'t find any required packages.')->br();
+        }
 
-        $climate = new CLImate();
+        $versions = $this->getVersions($packages);
 
         if (count($versions) <= 0) {
             return $climate->br()->out('All dependencies match the latest package versions <green>:)</green>')->br();
@@ -67,7 +71,19 @@ class CheckCommand extends Command
     {
         $json = json_decode(file_get_contents(getcwd().'/composer.json'), true);
 
-        $packages = array_merge($json['require'], $json['require-dev']);
+        $packages = [];
+
+        if (isset($json['require'])) {
+            $packages = array_merge($packages, $json['require']);
+        }
+
+        if (isset($json['require-dev'])) {
+            $packages = array_merge($packages, $json['require-dev']);
+        }
+
+        if (count($packages) <= 0) {
+            return [];
+        }
 
         $array = [];
 
