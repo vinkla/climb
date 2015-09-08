@@ -1,4 +1,4 @@
-# Climb
+# Composer Climb
 
 ![climb](https://cloud.githubusercontent.com/assets/499192/9735244/a9564544-5639-11e5-8bd2-e108f3d340c1.png)
 
