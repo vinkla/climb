@@ -79,7 +79,7 @@ class CheckCommand extends Command
                 continue;
             }
 
-            array_push($array, [$name => $version]);
+            $array[$name] = $version;
         }
 
         return $array;
