@@ -10,7 +10,7 @@ A Composer version manager tool
 [![Latest Version](https://img.shields.io/github/release/vinkla/climb.svg?style=flat)](https://github.com/vinkla/climb/releases)
 [![License](https://img.shields.io/packagist/l/vinkla/climb.svg?style=flat)](https://packagist.org/packages/vinkla/climb)
 
-> **Note:** This is still in early stages of development and may change in the future.
+> **Note:** This tool is still in early stages of development and may change in the future. There are some bugs that we're aware of and will try to fix asap. If you find any please report! Also appreciate pull requests, a lot!
 
 ## Installation
 
