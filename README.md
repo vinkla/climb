@@ -16,7 +16,7 @@ A Composer version manager tool
 
 Run this command to install the CLI tool globally.
 ```bash
-composer global require vinkla/climb
+composer global require vinkla/climb:1.0.*@dev
 ```
 
 Be sure to have composer binaries in your $PATH:
