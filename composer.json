@@ -28,7 +28,7 @@
         }
     },
     "bin": [
-        "climb"
+        "bin/climb"
     ],
     "extra": {
         "branch-alias": {
