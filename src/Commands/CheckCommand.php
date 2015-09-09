@@ -11,6 +11,7 @@
 
 namespace Vinkla\Climb\Commands;
 
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use League\CLImate\CLImate;
 use Packagist\Api\Client;
 use Stringy\Stringy;
@@ -114,15 +115,19 @@ class CheckCommand extends Command
         $versions = [];
 
         foreach ($packages as $name => $version) {
-            $package = $client->get($name);
+            try {
+                $package = $client->get($name);
 
-            $latest = $this->getLatest($package->getVersions());
+                $latest = $this->getLatest($package->getVersions());
 
-            $current = $this->normalize($version);
-            $latest = $this->compare($current, $this->normalize($latest));
+                $current = $this->normalize($version);
+                $latest = $this->compare($current, $this->normalize($latest));
 
-            if (($latest || $latest !== '') && $current !== $latest) {
-                array_push($versions, [$name, $current, '→', $latest]);
+                if (($latest || $latest !== '') && $current !== $latest) {
+                    array_push($versions, [$name, $current, '→', $latest]);
+                }
+            } catch (ClientErrorResponseException $e) {
+                continue;
             }
         }
 
