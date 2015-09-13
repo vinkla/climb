@@ -120,12 +120,14 @@ class CheckCommand extends Command
 
                 $latest = $this->getLatest($package->getVersions());
 
-                $current = $this->normalize($version);
-                $latest = $this->compare($current, $this->normalize($latest));
-
-                if (($latest || $latest !== '') && $current !== $latest) {
-                    array_push($versions, [$name, $current, '→', $latest]);
+                if (version_compare($version, $latest, '>')) {
+                    continue;
                 }
+
+                $current = $this->normalize($version);
+                $latest = $this->diff($current, $this->normalize($latest));
+
+                array_push($versions, [$name, $current, '→', $latest]);
             } catch (ClientErrorResponseException $e) {
                 continue;
             }
@@ -169,14 +171,14 @@ class CheckCommand extends Command
     }
 
     /**
-     * Compare the current and latest versions.
+     * Get the diff between the current and latest version.
      *
      * @param string $current
      * @param string $latest
      *
      * @return string
      */
-    private function compare($current, $latest)
+    private function diff($current, $latest)
     {
         $current = str_split($current);
         $latest = str_split($latest);
