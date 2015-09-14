@@ -37,16 +37,8 @@ class Application extends Console
     {
         parent::__construct('Climb', self::VERSION);
 
-        $this->setDefaultCommand('check');
-    }
+        $this->add(new CheckCommand());
 
-    /**
-     * Gets the default commands that should always be available.
-     *
-     * @return array
-     */
-    protected function getDefaultCommands()
-    {
-        return [new CheckCommand(), new HelpCommand(), new ListCommand()];
+        $this->setDefaultCommand('check');
     }
 }
