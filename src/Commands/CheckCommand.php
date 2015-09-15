@@ -132,7 +132,6 @@ class CheckCommand extends Command
 
                     array_push($versions, [$name, $current, '→', $latest]);
                 }
-
             } catch (ClientErrorResponseException $e) {
                 continue;
             }
