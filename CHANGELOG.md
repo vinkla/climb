@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.3 (released 2015-09-15)
+
+- Add better version compare
+
 ## 0.1.2 (released 2015-09-15)
 
 - Check if the composer.json file exists

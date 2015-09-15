@@ -124,16 +124,15 @@ class CheckCommand extends Command
             try {
                 $package = $client->get($name);
 
-                $latest = $this->getLatest($package->getVersions());
+                $current = $this->normalize($version);
+                $latest = $this->normalize($this->getLatest($package->getVersions()));
 
-                if (version_compare($version, $latest, '>')) {
-                    continue;
+                if (version_compare($version, $latest, '<') && $current !== $latest) {
+                    $latest = $this->diff($current, $latest);
+
+                    array_push($versions, [$name, $current, '→', $latest]);
                 }
 
-                $current = $this->normalize($version);
-                $latest = $this->diff($current, $this->normalize($latest));
-
-                array_push($versions, [$name, $current, '→', $latest]);
             } catch (ClientErrorResponseException $e) {
                 continue;
             }
