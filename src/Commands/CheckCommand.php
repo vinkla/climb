@@ -70,7 +70,13 @@ class CheckCommand extends Command
      */
     private function getPackages()
     {
-        $json = json_decode(file_get_contents(getcwd().'/composer.json'), true);
+        $file = getcwd().'/composer.json';
+
+        if (!file_exists($file)) {
+            return [];
+        }
+
+        $json = json_decode(file_get_contents($file), true);
 
         $packages = [];
 
