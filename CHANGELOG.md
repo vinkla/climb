@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.4 (released 2015-09-16)
+
+- Fix bug in get latest method
+
 ## 0.1.3 (released 2015-09-15)
 
 - Add better version compare
