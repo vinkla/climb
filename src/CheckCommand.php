@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb\Commands;
+namespace Vinkla\Climb;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use League\CLImate\CLImate;
