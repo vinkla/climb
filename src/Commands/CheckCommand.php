@@ -125,7 +125,7 @@ class CheckCommand extends Command
                 $package = $client->get($name);
 
                 $current = $this->normalize($version);
-                $latest = $this->normalize($this->getLatest($package->getVersions()));
+                $latest = $this->getLatest($package->getVersions());
 
                 if (version_compare($version, $latest, '<') && $current !== $latest) {
                     $latest = $this->diff($current, $latest);
@@ -149,11 +149,27 @@ class CheckCommand extends Command
      */
     private function getLatest(array $versions)
     {
-        foreach ($versions as $version) {
-            if (preg_match('/^v?\d\.\d(\.\d)?$/', $version->getVersion())) {
-                return $version->getVersion();
+        $versions = array_map(
+            function($v) {
+                return $this->normalize($v->getVersion());
+            },
+            $versions
+        );
+
+        $versions = array_filter(
+            $versions,
+            function($v) {
+                return preg_match('/^v?\d\.\d(\.\d)?$/', $v);
             }
-        }
+        );
+
+        return array_reduce(
+            $versions,
+            function($carry, $item) {
+                return version_compare($carry, $item, '>') ? $carry : $item;
+            },
+            '0.0.0'
+        );
     }
 
     /**
