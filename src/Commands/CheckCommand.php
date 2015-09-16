@@ -149,27 +149,17 @@ class CheckCommand extends Command
      */
     private function getLatest(array $versions)
     {
-        $versions = array_map(
-            function($v) {
-                return $this->normalize($v->getVersion());
-            },
-            $versions
-        );
+        $versions = array_map(function ($version) {
+            return $this->normalize($version->getVersion());
+        }, $versions);
 
-        $versions = array_filter(
-            $versions,
-            function($v) {
-                return preg_match('/^v?\d\.\d(\.\d)?$/', $v);
-            }
-        );
+        $versions = array_filter($versions, function ($version) {
+            return preg_match('/^v?\d\.\d(\.\d)?$/', $version);
+        });
 
-        return array_reduce(
-            $versions,
-            function($carry, $item) {
-                return version_compare($carry, $item, '>') ? $carry : $item;
-            },
-            '0.0.0'
-        );
+        return array_reduce($versions, function ($carry, $item) {
+            return version_compare($carry, $item, '>') ? $carry : $item;
+        }, '0.0.0');
     }
 
     /**
