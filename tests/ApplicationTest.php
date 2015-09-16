@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb\Tests;
+namespace Vinkla\Tests\Climb;
 
+use Symfony\Component\Console\Application as Console;
 use Vinkla\Climb\Application;
 
 /**
@@ -24,6 +25,6 @@ class ApplicationTest extends AbstractTestCase
     {
         $app = new Application();
 
-        $this->assertInstanceOf('Symfony\Component\Console\Application', $app);
+        $this->assertInstanceOf(Console::class, $app);
     }
 }

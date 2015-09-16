@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb\Tests;
+namespace Vinkla\Tests\Climb;
 
 use PHPUnit_Framework_TestCase;
 
