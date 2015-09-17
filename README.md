@@ -24,7 +24,7 @@ Be sure to have composer binaries in your $PATH:
 export PATH=${PATH}:${HOME}/.composer/vendor/bin;
 ```
 
-This is requried in order to use this tool.
+This is required in order to use this tool.
 
 ## Usage
 
