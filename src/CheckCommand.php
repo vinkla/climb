@@ -64,7 +64,7 @@ class CheckCommand extends Command
     }
 
     /**
-     * Get the required packages.
+     * Get the installed packages.
      *
      * @return array
      */
@@ -78,20 +78,29 @@ class CheckCommand extends Command
 
         $json = json_decode(file_get_contents($file), true);
 
-        $packages = $json['packages'];
+        $packages = [];
+
+        if (isset($json['packages'])) {
+            $packages = array_merge($packages, $json['packages']);
+        }
+
+        if (isset($json['packages-dev'])) {
+            $packages = array_merge($packages, $json['packages-dev']);
+        }
 
         if (count($packages) <= 0) {
             return [];
         }
 
         $array = [];
+        $requiredPackages = $this->getRequiredPackageNames();
 
         foreach ($packages as $package) {
             $name = $package['name'];
 
             $string = new Stringy($name);
 
-            if ($string->startsWith('php') || $string->startsWith('ext')) {
+            if ($string->startsWith('php') || $string->startsWith('ext') || !in_array($name, $requiredPackages)) {
                 continue;
             }
 
@@ -99,6 +108,38 @@ class CheckCommand extends Command
         }
 
         return $array;
+    }
+
+    /**
+     * Get the names of required packages.
+     *
+     * @return array
+     */
+    private function getRequiredPackageNames()
+    {
+        $file = getcwd().'/composer.json';
+
+        if (!file_exists($file)) {
+            return [];
+        }
+
+        $json = json_decode(file_get_contents($file), true);
+
+        $packages = [];
+
+        if (isset($json['require'])) {
+            $packages = array_merge($packages, $json['require']);
+        }
+
+        if (isset($json['require-dev'])) {
+            $packages = array_merge($packages, $json['require-dev']);
+        }
+
+        if (count($packages) <= 0) {
+            return [];
+        }
+
+        return array_keys($packages);
     }
 
     /**
