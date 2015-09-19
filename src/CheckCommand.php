@@ -70,7 +70,7 @@ class CheckCommand extends Command
      */
     private function getPackages()
     {
-        $file = getcwd().'/composer.json';
+        $file = getcwd().'/composer.lock';
 
         if (!file_exists($file)) {
             return [];
@@ -78,15 +78,7 @@ class CheckCommand extends Command
 
         $json = json_decode(file_get_contents($file), true);
 
-        $packages = [];
-
-        if (isset($json['require'])) {
-            $packages = array_merge($packages, $json['require']);
-        }
-
-        if (isset($json['require-dev'])) {
-            $packages = array_merge($packages, $json['require-dev']);
-        }
+        $packages = $json['packages'];
 
         if (count($packages) <= 0) {
             return [];
@@ -94,14 +86,16 @@ class CheckCommand extends Command
 
         $array = [];
 
-        foreach ($packages as $name => $version) {
+        foreach ($packages as $package) {
+            $name = $package['name'];
+
             $string = new Stringy($name);
 
             if ($string->startsWith('php') || $string->startsWith('ext')) {
                 continue;
             }
 
-            $array[$name] = $version;
+            $array[$name] = $package['version'];
         }
 
         return $array;
