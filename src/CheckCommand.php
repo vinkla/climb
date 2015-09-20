@@ -46,25 +46,27 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $climate = new CLImate();
+        try {
+            $climate = new CLImate();
 
-        $packages = $this->getPackages();
+            $packages = $this->getPackages();
 
-        if (count($packages) <= 0) {
-            return $climate->br()->error('We couldn\'t find any required packages.')->br();
+            $versions = $this->getVersions($packages);
+
+            if (count($versions) <= 0) {
+                return $climate->br()->out('All dependencies match the latest package versions <green>:)</green>')->br();
+            }
+
+            return $climate->br()->columns($versions, 3)->br();
+        } catch (ClimbException $exception) {
+            return $climate->br()->error($exception->getMessage())->br();
         }
-
-        $versions = $this->getVersions($packages);
-
-        if (count($versions) <= 0) {
-            return $climate->br()->out('All dependencies match the latest package versions <green>:)</green>')->br();
-        }
-
-        return $climate->br()->columns($versions, 3)->br();
     }
 
     /**
      * Get the installed packages.
+     *
+     * @throws \Vinkla\Climb\ClimbException
      *
      * @return array
      */
@@ -73,23 +75,23 @@ class CheckCommand extends Command
         $file = getcwd().'/composer.lock';
 
         if (!file_exists($file)) {
-            return [];
+            throw new ClimbException('We couldn\'t find any composer.lock file.');
         }
 
-        $json = json_decode(file_get_contents($file), true);
+        $content = json_decode(file_get_contents($file), true);
 
         $packages = [];
 
-        if (isset($json['packages'])) {
-            $packages = array_merge($packages, $json['packages']);
+        if (isset($content['packages'])) {
+            $packages = array_merge($packages, $content['packages']);
         }
 
-        if (isset($json['packages-dev'])) {
-            $packages = array_merge($packages, $json['packages-dev']);
+        if (isset($content['packages-dev'])) {
+            $packages = array_merge($packages, $content['packages-dev']);
         }
 
         if (count($packages) <= 0) {
-            return [];
+            throw new ClimbException('We couldn\'t find any required packages.');
         }
 
         $array = [];
@@ -113,6 +115,8 @@ class CheckCommand extends Command
     /**
      * Get the names of required packages.
      *
+     * @throws \Vinkla\Climb\ClimbException
+     *
      * @return array
      */
     private function getRequiredPackageNames()
@@ -120,7 +124,7 @@ class CheckCommand extends Command
         $file = getcwd().'/composer.json';
 
         if (!file_exists($file)) {
-            return [];
+            throw new ClimbException('We couldn\'t find any composer.json file.');
         }
 
         $json = json_decode(file_get_contents($file), true);
@@ -136,7 +140,7 @@ class CheckCommand extends Command
         }
 
         if (count($packages) <= 0) {
-            return [];
+            throw new ClimbException('We couldn\'t find any required packages.');
         }
 
         return array_keys($packages);

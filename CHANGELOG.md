@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.3.0 (upcoming)
+
+- Add better error handlers
+
 ## 0.2.0 (released 2015-09-20)
 
 - Check installed versions
