@@ -52,8 +52,7 @@ class CheckCommand extends Command
             $packages = $this->getUpdates();
 
             if (count($packages) <= 0) {
-                return $climate->br()->line('All dependencies match the latest package versions <green>:)</green>')
-                    ->br();
+                return $climate->br()->line('All dependencies match the latest package versions <green>:)</green>')->br();
             }
 
             return $climate->br()->columns($packages, 3)->br();
