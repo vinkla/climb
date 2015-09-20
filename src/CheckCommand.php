@@ -46,104 +46,123 @@ class CheckCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $climate = new CLImate();
+
         try {
-            $climate = new CLImate();
+            $packages = $this->getUpdates();
 
-            $packages = $this->getPackages();
-
-            $versions = $this->getVersions($packages);
-
-            if (count($versions) <= 0) {
-                return $climate->br()->out('All dependencies match the latest package versions <green>:)</green>')->br();
+            if (count($packages) <= 0) {
+                return $climate->br()->line('All dependencies match the latest package versions <green>:)</green>')
+                    ->br();
             }
 
-            return $climate->br()->columns($versions, 3)->br();
+            return $climate->br()->columns($packages, 3)->br();
         } catch (ClimbException $exception) {
             return $climate->br()->error($exception->getMessage())->br();
         }
     }
 
     /**
-     * Get the installed packages.
+     * Get installed packages.
      *
      * @throws \Vinkla\Climb\ClimbException
      *
      * @return array
      */
-    private function getPackages()
+    private function getInstalledPackages()
     {
-        $file = getcwd().'/composer.lock';
-
-        if (!file_exists($file)) {
-            throw new ClimbException('We couldn\'t find any composer.lock file.');
-        }
-
-        $content = json_decode(file_get_contents($file), true);
-
         $packages = [];
 
-        if (isset($content['packages'])) {
-            $packages = array_merge($packages, $content['packages']);
+        $content = $this->getFileContent('composer.lock');
+
+        foreach (['packages', 'packages-dev'] as $key) {
+            if (isset($content[$key])) {
+                $packages = array_merge($packages, $content[$key]);
+            }
         }
 
-        if (isset($content['packages-dev'])) {
-            $packages = array_merge($packages, $content['packages-dev']);
+        if (count($packages) <= 0) {
+            throw new ClimbException('We couldn\'t find any installed packages.');
+        }
+
+        return $packages;
+    }
+
+    /**
+     * Get required packages.
+     *
+     * @throws \Vinkla\Climb\ClimbException
+     *
+     * @return array
+     */
+    private function getRequiredPackages()
+    {
+        $packages = [];
+
+        $content = $this->getFileContent('composer.json');
+
+        foreach (['require', 'require-dev'] as $key) {
+            if (isset($content[$key])) {
+                $packages = array_merge($packages, $content[$key]);
+            }
         }
 
         if (count($packages) <= 0) {
             throw new ClimbException('We couldn\'t find any required packages.');
         }
 
+        return $packages;
+    }
+
+    /**
+     * Get file content.
+     *
+     * @param string $file
+     *
+     * @throws \Vinkla\Climb\ClimbException
+     *
+     * @return array
+     */
+    private function getFileContent($file)
+    {
+        $filePath = getcwd().'/'.$file;
+
+        if (!file_exists($filePath)) {
+            throw new ClimbException('We couldn\'t find any '.$file.' file.');
+        }
+
+        return json_decode(file_get_contents($filePath), true);
+    }
+
+    /**
+     * Get new versions.
+     *
+     * @throws \Vinkla\Climb\ClimbException
+     *
+     * @return array
+     */
+    private function getUpdates()
+    {
+        $packages = $this->getInstalledPackages();
+        $required = array_keys($this->getRequiredPackages());
+
         $array = [];
-        $requiredPackages = $this->getRequiredPackageNames();
 
         foreach ($packages as $package) {
             $name = $package['name'];
 
             $string = new Stringy($name);
 
-            if ($string->startsWith('php') || $string->startsWith('ext') || !in_array($name, $requiredPackages)) {
+            if ($string->startsWith('php') || $string->startsWith('ext') || !in_array($name, $required)) {
                 continue;
             }
 
             $array[$name] = $package['version'];
         }
 
-        return $array;
-    }
+        $versions = $this->getVersions($array);
 
-    /**
-     * Get the names of required packages.
-     *
-     * @throws \Vinkla\Climb\ClimbException
-     *
-     * @return array
-     */
-    private function getRequiredPackageNames()
-    {
-        $file = getcwd().'/composer.json';
-
-        if (!file_exists($file)) {
-            throw new ClimbException('We couldn\'t find any composer.json file.');
-        }
-
-        $json = json_decode(file_get_contents($file), true);
-
-        $packages = [];
-
-        if (isset($json['require'])) {
-            $packages = array_merge($packages, $json['require']);
-        }
-
-        if (isset($json['require-dev'])) {
-            $packages = array_merge($packages, $json['require-dev']);
-        }
-
-        if (count($packages) <= 0) {
-            throw new ClimbException('We couldn\'t find any required packages.');
-        }
-
-        return array_keys($packages);
+        return $versions;
     }
 
     /**
