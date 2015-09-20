@@ -64,11 +64,58 @@ class CheckCommand extends Command
     }
 
     /**
-     * Get the required packages.
+     * Get the installed packages.
      *
      * @return array
      */
     private function getPackages()
+    {
+        $file = getcwd().'/composer.lock';
+
+        if (!file_exists($file)) {
+            return [];
+        }
+
+        $json = json_decode(file_get_contents($file), true);
+
+        $packages = [];
+
+        if (isset($json['packages'])) {
+            $packages = array_merge($packages, $json['packages']);
+        }
+
+        if (isset($json['packages-dev'])) {
+            $packages = array_merge($packages, $json['packages-dev']);
+        }
+
+        if (count($packages) <= 0) {
+            return [];
+        }
+
+        $array = [];
+        $requiredPackages = $this->getRequiredPackageNames();
+
+        foreach ($packages as $package) {
+            $name = $package['name'];
+
+            $string = new Stringy($name);
+
+            if ($string->startsWith('php') || $string->startsWith('ext') || !in_array($name, $requiredPackages)) {
+                continue;
+            }
+
+            $array[$name] = $package['version'];
+        }
+
+        return $array;
+    }
+
+    /**
+     * Get the names of required packages.
+     *
+     * @return array
+     */
+    private function getRequiredPackageNames()
     {
         $file = getcwd().'/composer.json';
 
@@ -92,19 +139,7 @@ class CheckCommand extends Command
             return [];
         }
 
-        $array = [];
-
-        foreach ($packages as $name => $version) {
-            $string = new Stringy($name);
-
-            if ($string->startsWith('php') || $string->startsWith('ext')) {
-                continue;
-            }
-
-            $array[$name] = $version;
-        }
-
-        return $array;
+        return array_keys($packages);
     }
 
     /**
