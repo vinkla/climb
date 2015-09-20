@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.0 (released 2015-09-20)
+
+- Check installed versions
+
 ## 0.1.4 (released 2015-09-16)
 
 - Fix bug in get latest method
