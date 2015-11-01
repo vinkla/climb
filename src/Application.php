@@ -32,7 +32,7 @@ class Application extends Console
      */
     public function __construct()
     {
-        Console::__construct('Climb', self::VERSION);
+        parent::__construct('Climb', self::VERSION);
 
         $this->add(new OutdatedCommand());
 
