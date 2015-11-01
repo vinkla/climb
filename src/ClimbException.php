@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb\Console;
+namespace Vinkla\Climb;
 
 use Exception;
 

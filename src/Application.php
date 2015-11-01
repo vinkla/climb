@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb\Console;
+namespace Vinkla\Climb;
 
 use Symfony\Component\Console\Application as Console;
 
@@ -32,7 +32,7 @@ class Application extends Console
      */
     public function __construct()
     {
-        parent::__construct('Climb', self::VERSION);
+        Console::__construct('Climb', self::VERSION);
 
         $this->add(new OutdatedCommand());
 

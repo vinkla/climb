@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb\Console;
+namespace Vinkla\Climb;
 
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vinkla\Climb\Ladder;
 
 /**
  * This is the outdated command class.
