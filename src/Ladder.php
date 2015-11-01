@@ -44,7 +44,7 @@ class Ladder
             }
         }
 
-        if (! $packages) {
+        if (!$packages) {
             throw new ClimbException('We couldn\'t find any installed packages.');
         }
 
@@ -67,7 +67,7 @@ class Ladder
         foreach (['require', 'require-dev'] as $key) {
             if (isset($content[$key])) {
                 foreach ($content[$key] as $package => $version) {
-                    if (! strstr($package, '/')) {
+                    if (!strstr($package, '/')) {
                         continue;
                     }
 
@@ -76,7 +76,7 @@ class Ladder
             }
         }
 
-        if (! $packages) {
+        if (!$packages) {
             throw new ClimbException('We couldn\'t find any required packages.');
         }
 
@@ -165,7 +165,7 @@ class Ladder
     {
         $filePath = getcwd().'/'.$file;
 
-        if (! file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             throw new ClimbException('We couldn\'t find any '.$file.' file.');
         }
 
