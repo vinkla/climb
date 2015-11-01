@@ -39,7 +39,7 @@ class Ladder
         foreach (['packages', 'packages-dev'] as $key) {
             if (isset($content[$key])) {
                 foreach ($content[$key] as $package) {
-                    $packages[$package['name']] = $package['version'];
+                    $packages[$package['name']] = $this->normalize($package['version']);
                 }
             }
         }

@@ -43,7 +43,7 @@ class OutdatedCommand extends Command
             $lines = [];
             foreach ($packages as $name => list($version, $latest)) {
                 $latest = $this->diff($version, $latest);
-                $lines[] = [$name, $version, $latest];
+                $lines[] = [$name, $version, '→', $latest];
             }
 
             return $climate->br()->columns($lines, 3)->br();
