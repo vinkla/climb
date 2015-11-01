@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## 0.3.0 (upcoming)
+## 0.3.0 (released 2015-11-01)
 
 - Add better error handlers
+- Add composer/semver package
 
 ## 0.2.0 (released 2015-09-20)
 
