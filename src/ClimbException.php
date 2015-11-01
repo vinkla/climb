@@ -13,6 +13,11 @@ namespace Vinkla\Climb\Console;
 
 use Exception;
 
+/**
+ * This is the climb exception class.
+ *
+ * @author Vincent Klaiber <hello@vinkla.com>
+ */
 class ClimbException extends Exception
 {
     //

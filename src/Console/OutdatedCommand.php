@@ -17,6 +17,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
 
+/**
+ * This is the outdated command class.
+ *
+ * @author Vincent Klaiber <hello@vinkla.com>
+ */
 class OutdatedCommand extends Command
 {
     /**

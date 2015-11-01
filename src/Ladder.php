@@ -15,6 +15,11 @@ use Composer\Semver\Comparator;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Packagist\Api\Client;
 
+/**
+ * This is the ladder class.
+ *
+ * @author Vincent Klaiber <hello@vinkla.com>
+ */
 class Ladder
 {
     /**

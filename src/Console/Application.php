@@ -13,6 +13,11 @@ namespace Vinkla\Climb\Console;
 
 use Symfony\Component\Console\Application as Console;
 
+/**
+ * This is the application class.
+ *
+ * @author Vincent Klaiber <hello@vinkla.com>
+ */
 class Application extends Console
 {
     /**
