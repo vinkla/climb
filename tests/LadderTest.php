@@ -8,42 +8,62 @@ class LadderTest extends AbstractTestCase
 {
     public function testDetectsOutdated()
     {
-        $ladder = Mockery::mock('Vinkla\Climb\Ladder[getInstalledPackages,getRequiredPackages]');
+        $ladder = Mockery::mock('Vinkla\Climb\Ladder[getInstalledPackages,getRequiredPackages,getLatestVersion]');
 
         $ladder->shouldReceive('getInstalledPackages')->andReturn([
-            'monolog/monolog' => '1.5.0',
+            'vinkla/climb' => '1.5.0',
         ]);
 
         $ladder->shouldReceive('getRequiredPackages')->andReturn([
-            'monolog/monolog' => '^1.0.0',
+            'vinkla/climb' => '^1.0.0',
         ]);
+
+        $ladder->shouldReceive('getLatestVersion')->with('vinkla/climb')->andReturn('1.6.1');
 
         $outdated = $ladder->getOutdatedPackages();
 
-        $this->assertArrayHasKey('monolog/monolog', $outdated);
-
-        $latest = $ladder->getLatestVersion('monolog/monolog');
-
-        $this->assertEquals('1.5.0', $outdated['monolog/monolog'][0]);
-        $this->assertEquals($latest, $outdated['monolog/monolog'][1]);
+        $this->assertArrayHasKey('vinkla/climb', $outdated);
+        $this->assertEquals('1.5.0', $outdated['vinkla/climb'][0]);
+        $this->assertEquals('1.6.1', $outdated['vinkla/climb'][1]);
     }
 
     public function testSkipsNonOutdated()
     {
-        $ladder = Mockery::mock('Vinkla\Climb\Ladder[getInstalledPackages,getRequiredPackages]');
-
-        $latest = $ladder->getLatestVersion('monolog/monolog');
+        $ladder = Mockery::mock('Vinkla\Climb\Ladder[getInstalledPackages,getRequiredPackages,getLatestVersion]');
 
         $ladder->shouldReceive('getInstalledPackages')->andReturn([
-            'monolog/monolog' => $latest,
+            'vinkla/climb' => '1.5.0',
         ]);
 
         $ladder->shouldReceive('getRequiredPackages')->andReturn([
-            'monolog/monolog' => '^1.0.0',
+            'vinkla/climb' => '^1.0.0',
         ]);
+
+        $ladder->shouldReceive('getLatestVersion')->with('vinkla/climb')->andReturn('1.5.0');
 
         $outdated = $ladder->getOutdatedPackages();
 
-        $this->assertArrayNotHasKey('monolog/monolog', $outdated);
+        $this->assertArrayNotHasKey('vinkla/climb', $outdated);
+    }
+
+    public function testSupportsTags()
+    {
+        $ladder = Mockery::mock('Vinkla\Climb\Ladder[getInstalledPackages,getRequiredPackages,getLatestVersion]');
+
+        $ladder->shouldReceive('getInstalledPackages')->andReturn([
+            'vinkla/climb' => '2.0.0-beta',
+        ]);
+
+        $ladder->shouldReceive('getRequiredPackages')->andReturn([
+            'vinkla/climb' => '^2.0.0',
+        ]);
+
+        $ladder->shouldReceive('getLatestVersion')->with('vinkla/climb')->andReturn('2.0.0-rc');
+
+        $outdated = $ladder->getOutdatedPackages();
+
+        $this->assertArrayHasKey('vinkla/climb', $outdated);
+        $this->assertEquals('2.0.0-beta', $outdated['vinkla/climb'][0]);
+        $this->assertEquals('2.0.0-rc', $outdated['vinkla/climb'][1]);
     }
 }
