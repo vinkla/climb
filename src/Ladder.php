@@ -180,7 +180,7 @@ class Ladder
         $filePath = getcwd().'/'.$file;
 
         if (!file_exists($filePath)) {
-            throw new ClimbException('We couldn\'t find any '.$file.' file.');
+            throw new ClimbException("We couldn't find any file [$file].");
         }
 
         return json_decode(file_get_contents($filePath), true);
