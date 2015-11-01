@@ -11,6 +11,7 @@
 
 namespace Vinkla\Climb;
 
+use Composer\Semver\Comparator;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use League\CLImate\CLImate;
 use Packagist\Api\Client;
@@ -210,12 +211,8 @@ class CheckCommand extends Command
             return $this->normalize($version->getVersion());
         }, $versions);
 
-        $versions = array_filter($versions, function ($version) {
-            return preg_match('/^v?\d\.\d(\.\d)?$/', $version);
-        });
-
         return array_reduce($versions, function ($carry, $item) {
-            return version_compare($carry, $item, '>') ? $carry : $item;
+            return Comparator::greaterThan($carry, $item) ? $carry : $item;
         }, '0.0.0');
     }
 
