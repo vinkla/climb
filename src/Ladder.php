@@ -112,7 +112,7 @@ class Ladder
         return $outdated;
     }
 
-    private function getLatestVersion($name)
+    public function getLatestVersion($name)
     {
         try {
             // Get all package versions.

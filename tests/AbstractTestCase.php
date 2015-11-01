@@ -11,6 +11,7 @@
 
 namespace Vinkla\Tests\Climb;
 
+use Mockery;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -20,5 +21,8 @@ use PHPUnit_Framework_TestCase;
  */
 class AbstractTestCase extends PHPUnit_Framework_TestCase
 {
-    //
+    public function tearDown()
+    {
+    	Mockery::close();
+    }
 }
