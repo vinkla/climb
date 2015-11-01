@@ -185,7 +185,7 @@ class CheckCommand extends Command
                 $current = $this->normalize($version);
                 $latest = $this->getLatest($package->getVersions());
 
-                if (version_compare($version, $latest, '<') && $current !== $latest) {
+                if (Comparator::lessThan($version, $latest)) {
                     $latest = $this->diff($current, $latest);
 
                     array_push($versions, [$name, $current, '→', $latest]);
@@ -225,7 +225,7 @@ class CheckCommand extends Command
      */
     private function normalize($version)
     {
-        $version = preg_replace('/(v|\^|~)/', '', $version);
+        $version = preg_replace('/^(v|\^|~)/', '', $version);
 
         if (preg_match('/^\d\.\d$/', $version)) {
             $version .= '.0';
