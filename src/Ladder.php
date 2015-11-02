@@ -19,6 +19,7 @@ use Packagist\Api\Client;
  * This is the ladder class.
  *
  * @author Vincent Klaiber <hello@vinkla.com>
+ * @author Jens Segers <hello@jenssegers.com>
  */
 class Ladder
 {

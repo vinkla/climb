@@ -13,6 +13,11 @@ namespace Vinkla\Tests\Climb;
 
 use Mockery;
 
+/**
+ * This is the ladder test class.
+ *
+ * @author Jens Segers <hello@jenssegers.com>
+ */
 class LadderTest extends AbstractTestCase
 {
     public function testDetectsOutdated()

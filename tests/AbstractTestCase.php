@@ -18,6 +18,7 @@ use PHPUnit_Framework_TestCase;
  * This is the abstract test case class.
  *
  * @author Vincent Klaiber <hello@vinkla.com>
+ * @author Jens Segers <hello@jenssegers.com>
  */
 class AbstractTestCase extends PHPUnit_Framework_TestCase
 {

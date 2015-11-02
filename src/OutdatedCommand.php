@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This is the outdated command class.
  *
  * @author Vincent Klaiber <hello@vinkla.com>
+ * @author Jens Segers <hello@jenssegers.com>
  */
 class OutdatedCommand extends Command
 {

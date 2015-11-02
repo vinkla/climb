@@ -14,6 +14,11 @@ namespace Vinkla\Tests\Climb;
 use Symfony\Component\Console\Application as Console;
 use Vinkla\Climb\Application;
 
+/**
+ * This is the application test class.
+ *
+ * @author Vincent Klaiber <hello@vinkla.com>
+ */
 class ApplicationTest extends AbstractTestCase
 {
     public function testApplication()
