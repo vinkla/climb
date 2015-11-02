@@ -7,6 +7,10 @@
         {
             "name": "Vincent Klaiber",
             "email": "hello@vinkla.com"
+        },
+        {
+            "name": "Jens Segers",
+            "homepage": "https://jenssegers.com"
         }
     ],
     "require": {
