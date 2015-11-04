@@ -54,7 +54,7 @@ class Ladder
         foreach (['packages', 'packages-dev'] as $key) {
             if (isset($content[$key])) {
                 foreach ($content[$key] as $package) {
-                    $packages[$package['name']] = $this->normalize($package['version']);
+                    $packages[$package['name']] = Version::normalize($package['version']);
                 }
             }
         }
@@ -116,11 +116,13 @@ class Ladder
 
         $outdated = [];
         foreach ($packages as $package => $version) {
-            $latest = $this->getLatestVersion($package);
+            if (!$latest = $this->getLatestVersion($package)) {
+                continue;
+            }
 
-            // Check if the latest version is higher than the current one.
             if (Comparator::lessThan($version, $latest)) {
-                $outdated[$package] = [$version, $latest];
+                $constraint = $required[$package];
+                $outdated[$package] = [$constraint, $version, $latest];
             }
         }
 
@@ -131,19 +133,11 @@ class Ladder
     {
         try {
             // Get all package versions.
-            $versions = $this->packagist->get($name)->getVersions();
-
-            // Normalize version numbers.
             $versions = array_map(function ($version) {
-                return $this->normalize($version->getVersion());
-            }, $versions);
+                return $version->getVersion();
+            }, $this->packagist->get($name)->getVersions());
 
-            // Get the highest version number.
-            $latest = array_reduce($versions, function ($carry, $item) {
-                return Comparator::greaterThan($carry, $item) ? $carry : $item;
-            }, '0.0.0');
-
-            return $latest;
+            return Version::latest($versions);
         } catch (ClientErrorResponseException $e) {
             return;
         }
