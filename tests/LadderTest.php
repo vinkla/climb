@@ -37,8 +37,9 @@ class LadderTest extends AbstractTestCase
         $outdated = $ladder->getOutdatedPackages();
 
         $this->assertArrayHasKey('vinkla/climb', $outdated);
-        $this->assertEquals('1.5.0', $outdated['vinkla/climb'][0]);
-        $this->assertEquals('1.6.1', $outdated['vinkla/climb'][1]);
+        $this->assertEquals('^1.0.0', $outdated['vinkla/climb'][0]);
+        $this->assertEquals('1.5.0', $outdated['vinkla/climb'][1]);
+        $this->assertEquals('1.6.1', $outdated['vinkla/climb'][2]);
     }
 
     public function testSkipsNonOutdated()
@@ -77,7 +78,8 @@ class LadderTest extends AbstractTestCase
         $outdated = $ladder->getOutdatedPackages();
 
         $this->assertArrayHasKey('vinkla/climb', $outdated);
-        $this->assertEquals('2.0.0-beta', $outdated['vinkla/climb'][0]);
-        $this->assertEquals('2.0.0-rc', $outdated['vinkla/climb'][1]);
+        $this->assertEquals('^2.0.0', $outdated['vinkla/climb'][0]);
+        $this->assertEquals('2.0.0-beta', $outdated['vinkla/climb'][1]);
+        $this->assertEquals('2.0.0-rc', $outdated['vinkla/climb'][2]);
     }
 }

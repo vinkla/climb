@@ -25,13 +25,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OutdatedCommand extends Command
 {
     /**
-     * Create a new outdated command instance.
+     * Command configuration.
      */
-    public function __construct()
+    protected function configure()
     {
-        parent::__construct('outdated');
-
-        $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
+        $this
+            ->setName('outdated')
+            ->setDescription('Find newer versions of dependencies than what your composer.json allows');
     }
 
     /**
@@ -50,19 +50,36 @@ class OutdatedCommand extends Command
         try {
             $packages = $ladder->getOutdatedPackages();
 
-            if (count($packages) <= 0) {
-                return $climate->br()->line('All dependencies match the latest package versions <green>:)</green>')->br();
+            if (!$packages) {
+                $climate->br()->write('All dependencies match the latest package versions <green>:)</green>');
+
+                return;
             }
 
-            $lines = [];
-            foreach ($packages as $name => list($version, $latest)) {
-                $latest = $this->diff($version, $latest);
-                $lines[] = [$name, $version, '→', $latest];
+            $outdated = [];
+            $upgradable = [];
+
+            foreach ($packages as $name => list($constraint, $version, $latest)) {
+                if (Version::satisfies($latest, $constraint)) {
+                    $latest = $this->diff($version, $latest);
+                    $upgradable[] = [$name, $version, '→', $latest];
+                } else {
+                    $latest = $this->diff($version, $latest);
+                    $outdated[] = [$name, $version, '→', $latest];
+                }
             }
 
-            return $climate->br()->columns($lines, 3)->br();
+            if ($outdated) {
+                $climate->br()->columns($outdated, 3)->br();
+            }
+
+            if ($upgradable) {
+                $climate->br()->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'');
+
+                $climate->br()->columns($upgradable, 3)->br();
+            }
         } catch (ClimbException $exception) {
-            return $climate->br()->error($exception->getMessage())->br();
+            $climate->error($exception->getMessage());
         }
     }
 
@@ -76,24 +93,14 @@ class OutdatedCommand extends Command
      */
     private function diff($current, $latest)
     {
-        $current = str_split($current);
-        $latest = str_split($latest);
-
-        $version = '';
-        $new = false;
-
-        foreach ($current as $i => $character) {
-            if (!isset($latest[$i])) {
+        $needle = 0;
+        while ($needle < strlen($current) && $needle < strlen($latest)) {
+            if ($current[$needle] != $latest[$needle]) {
                 break;
             }
-
-            if ($character !== $latest[$i]) {
-                $new = true;
-            }
-
-            $version .= $new ? '<green>'.$latest[$i].'</green>' : $latest[$i];
+            $needle++;
         }
 
-        return $version;
+        return substr($latest, 0, $needle).'<green>'.substr($latest, $needle).'</green>';
     }
 }
