@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.4.0 (released 2015-11-05)
+
+- Split outdated and upgradable packages
+- Hide development versions
+
 ## 0.3.0 (released 2015-11-01)
 
 - Add better error handlers
