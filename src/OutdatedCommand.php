@@ -80,7 +80,7 @@ class OutdatedCommand extends Command
                 $climate->br()->columns($upgradable, 3)->br();
             }
         } catch (ClimbException $exception) {
-            $climate->error($exception->getMessage());
+            $climate->br()->error($exception->getMessage())->br();
         }
     }
 
