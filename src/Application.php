@@ -29,6 +29,8 @@ class Application extends Console
 
     /**
      * Create a new application instance.
+     *
+     * @return void
      */
     public function __construct()
     {

@@ -32,6 +32,8 @@ class Ladder
 
     /**
      * Create a new ladder instance.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -115,6 +117,7 @@ class Ladder
         $packages = array_intersect_key($installed, $required);
 
         $outdated = [];
+
         foreach ($packages as $package => $version) {
             if (!$latest = $this->getLatestVersion($package)) {
                 continue;
@@ -122,6 +125,7 @@ class Ladder
 
             if (Comparator::lessThan($version, $latest)) {
                 $constraint = $required[$package];
+
                 $outdated[$package] = [$constraint, $version, $latest];
             }
         }
@@ -129,6 +133,13 @@ class Ladder
         return $outdated;
     }
 
+    /**
+     * Get latest package version.
+     *
+     * @param string $name
+     *
+     * @return string|void
+     */
     public function getLatestVersion($name)
     {
         try {
@@ -141,24 +152,6 @@ class Ladder
         } catch (ClientErrorResponseException $e) {
             return;
         }
-    }
-
-    /**
-     * Normalize the version number.
-     *
-     * @param string $version
-     *
-     * @return string
-     */
-    private function normalize($version)
-    {
-        $version = preg_replace('/^(v|\^|~)/', '', $version);
-
-        if (preg_match('/^\d\.\d$/', $version)) {
-            $version .= '.0';
-        }
-
-        return $version;
     }
 
     /**

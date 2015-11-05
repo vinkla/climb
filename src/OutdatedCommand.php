@@ -25,13 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OutdatedCommand extends Command
 {
     /**
-     * Command configuration.
+     * Configures the command.
+     *
+     * @return void
      */
     protected function configure()
     {
-        $this
-            ->setName('outdated')
-            ->setDescription('Find newer versions of dependencies than what your composer.json allows');
+        $this->setName('outdated');
+        $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
     }
 
     /**
@@ -94,10 +95,12 @@ class OutdatedCommand extends Command
     private function diff($current, $latest)
     {
         $needle = 0;
+
         while ($needle < strlen($current) && $needle < strlen($latest)) {
-            if ($current[$needle] != $latest[$needle]) {
+            if ($current[$needle] !== $latest[$needle]) {
                 break;
             }
+
             $needle++;
         }
 

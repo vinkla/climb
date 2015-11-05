@@ -16,7 +16,7 @@ use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
 
 /**
- * This is the ladder class.
+ * This is the version class.
  *
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
@@ -44,7 +44,7 @@ class Version extends Semver
     /**
      * Get the last version number from a list of versions.
      *
-     * @param  array  $versions
+     * @param array $versions
      *
      * @return string
      */
@@ -58,7 +58,7 @@ class Version extends Semver
         // Get the highest version number.
         $latest = array_reduce($versions, function ($carry, $item) {
             // Skip dev versions.
-            if (VersionParser::parseStability($item) == 'dev') {
+            if (VersionParser::parseStability($item) === 'dev') {
                 return $carry;
             }
 
