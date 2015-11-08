@@ -2,7 +2,7 @@
 
 ![climb](https://cloud.githubusercontent.com/assets/499192/9735244/a9564544-5639-11e5-8bd2-e108f3d340c1.png)
 
-A Composer version manager tool
+A Composer version manager tool made with inspiration from [this awesome npm package](https://www.npmjs.com/package/npm-check-updates). 
 
 [![Build Status](https://img.shields.io/travis/vinkla/climb/master.svg?style=flat)](https://travis-ci.org/vinkla/climb)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/vinkla/climb.svg?style=flat)](https://scrutinizer-ci.com/g/vinkla/climb/code-structure)
@@ -10,7 +10,7 @@ A Composer version manager tool
 [![Latest Version](https://img.shields.io/github/release/vinkla/climb.svg?style=flat)](https://github.com/vinkla/climb/releases)
 [![License](https://img.shields.io/packagist/l/vinkla/climb.svg?style=flat)](https://packagist.org/packages/vinkla/climb)
 
-> **Note:** This tool is still in early stages of development and may change in the future. The tool is a proof of concept. There are some bugs that we're aware of and will try to fix asap. If you find any please report! We also appreciate pull requests, a lot!
+> **Note:** This tool is still in early stages of development and may change in the future. The tool is a proof of concept. There are some bugs that we're aware of and we will try to fix them asap. If you find any please report! We also appreciate pull requests, a lot!
 
 ## Installation
 

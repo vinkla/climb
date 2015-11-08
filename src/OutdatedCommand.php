@@ -59,7 +59,7 @@ class OutdatedCommand extends Command
             $packages = $this->ladder->getOutdatedPackages();
 
             if (!$packages) {
-                $climate->br()->write('All dependencies match the latest package versions <green>:)</green>');
+                $climate->br()->write('All dependencies match the latest package versions <green>:)</green>')->br();
 
                 return;
             }
@@ -82,12 +82,12 @@ class OutdatedCommand extends Command
             }
 
             if ($upgradable) {
-                $climate->br()->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'');
+                $climate->br()->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.');
 
                 $climate->br()->columns($upgradable, 3);
             }
         } catch (ClimbException $exception) {
-            $climate->error($exception->getMessage());
+            $climate->br()->error($exception->getMessage())->br();
         }
     }
 
@@ -102,10 +102,12 @@ class OutdatedCommand extends Command
     private function diff($current, $latest)
     {
         $needle = 0;
+
         while ($needle < strlen($current) && $needle < strlen($latest)) {
-            if ($current[$needle] != $latest[$needle]) {
+            if ($current[$needle] !== $latest[$needle]) {
                 break;
             }
+
             $needle++;
         }
 
