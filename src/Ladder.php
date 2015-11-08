@@ -40,12 +40,14 @@ class Ladder
     /**
      * Create a new ladder instance.
      *
+     * @param  string $directory|null
+     *
      * @return void
      */
-    public function __construct($directory)
+    public function __construct($directory = null)
     {
         $this->packagist = new Client();
-        $this->directory = $directory;
+        $this->directory = $directory ?: getcwd();
     }
 
     /**

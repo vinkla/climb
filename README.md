@@ -2,7 +2,7 @@
 
 ![climb](https://cloud.githubusercontent.com/assets/499192/9735244/a9564544-5639-11e5-8bd2-e108f3d340c1.png)
 
-A Composer version manager tool made with inspiration from [this awesome npm package](https://www.npmjs.com/package/npm-check-updates). 
+A Composer version manager tool made with inspiration from [this awesome npm package](https://www.npmjs.com/package/npm-check-updates).
 
 [![Build Status](https://img.shields.io/travis/vinkla/climb/master.svg?style=flat)](https://travis-ci.org/vinkla/climb)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/vinkla/climb.svg?style=flat)](https://scrutinizer-ci.com/g/vinkla/climb/code-structure)
@@ -31,6 +31,11 @@ This is required in order to use this tool.
 From a directory where you've a `composer.json` file run the command below to check the packages:
 ```bash
 climb
+```
+
+If you want to check your global composer packages for outdated versions you can use:
+```bash
+climb global
 ```
 
 ## License

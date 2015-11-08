@@ -33,14 +33,15 @@ class OutdatedCommand extends Command
 
     /**
      * Command configuration.
+     *
+     * @return void
      */
     protected function configure()
     {
-        $this
-            ->setName('outdated')
-            ->setDescription('Find newer versions of dependencies than what your composer.json allows');
+        $this->setName('outdated');
+        $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
 
-        $this->ladder = new Ladder(getcwd());
+        $this->ladder = new Ladder();
     }
 
     /**

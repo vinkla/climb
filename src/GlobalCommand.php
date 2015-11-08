@@ -14,7 +14,7 @@ namespace Vinkla\Climb;
 use Symfony\Component\Console\Command\Command;
 
 /**
- * This is the outdated command class.
+ * This is the global command class.
  *
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
@@ -23,13 +23,14 @@ class GlobalCommand extends OutdatedCommand
 {
     /**
      * Command configuration.
+     *
+     * @return void
      */
     protected function configure()
     {
-        $this
-            ->setName('global')
-            ->setDescription('Find newer versions of dependencies than what your global composer.json allows');
+        $this->setName('global');
+        $this->setDescription('Find newer versions of dependencies than what your global composer.json allows');
 
-        $this->ladder = new Ladder(getenv('HOME') . '/.composer');
+        $this->ladder = new Ladder(getenv('HOME').'/.composer');
     }
 }
