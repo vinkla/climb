@@ -25,7 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OutdatedCommand extends Command
 {
     /**
-     * Configures the command.
+     * The Ladder instance.
+     *
+     * @var \Vinkla\Climb\Ladder
+     */
+    protected $ladder;
+
+    /**
+     * Command configuration.
      *
      * @return void
      */
@@ -33,6 +40,8 @@ class OutdatedCommand extends Command
     {
         $this->setName('outdated');
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
+
+        $this->ladder = new Ladder();
     }
 
     /**
@@ -46,10 +55,9 @@ class OutdatedCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $climate = new CLImate();
-        $ladder = new Ladder();
 
         try {
-            $packages = $ladder->getOutdatedPackages();
+            $packages = $this->ladder->getOutdatedPackages();
 
             if (!$packages) {
                 $climate->br()->write('All dependencies match the latest package versions <green>:)</green>')->br();
@@ -71,13 +79,13 @@ class OutdatedCommand extends Command
             }
 
             if ($outdated) {
-                $climate->br()->columns($outdated, 3)->br();
+                $climate->br()->columns($outdated, 3);
             }
 
             if ($upgradable) {
                 $climate->br()->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.');
 
-                $climate->br()->columns($upgradable, 3)->br();
+                $climate->br()->columns($upgradable, 3);
             }
         } catch (ClimbException $exception) {
             $climate->br()->error($exception->getMessage())->br();

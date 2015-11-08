@@ -31,13 +31,23 @@ class Ladder
     protected $packagist;
 
     /**
+     * The project directory.
+     *
+     * @var string
+     */
+    protected $directory;
+
+    /**
      * Create a new ladder instance.
+     *
+     * @param  string $directory|null
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($directory = null)
     {
         $this->packagist = new Client();
+        $this->directory = $directory ?: getcwd();
     }
 
     /**
@@ -165,10 +175,10 @@ class Ladder
      */
     private function getFileContent($file)
     {
-        $filePath = getcwd().'/'.$file;
+        $filePath = $this->directory.'/'.$file;
 
         if (!file_exists($filePath)) {
-            throw new ClimbException("We couldn't find any file [$file].");
+            throw new ClimbException("We couldn't find any file [$filePath].");
         }
 
         return json_decode(file_get_contents($filePath), true);
