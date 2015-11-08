@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb;
+namespace Vinkla\Climb\Console;
 
 use Symfony\Component\Console\Application as Console;
 

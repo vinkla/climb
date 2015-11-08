@@ -12,7 +12,7 @@
 namespace Vinkla\Tests\Climb;
 
 use Symfony\Component\Console\Application as Console;
-use Vinkla\Climb\Application;
+use Vinkla\Climb\Console\Application;
 
 /**
  * This is the application test class.

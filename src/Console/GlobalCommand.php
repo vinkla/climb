@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb;
+namespace Vinkla\Climb\Console;
 
 use Symfony\Component\Console\Command\Command;
+use Vinkla\Climb\Ladder;
 
 /**
  * This is the global command class.
