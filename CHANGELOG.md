@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.5.0 (released 2015-11-09)
+
+- Add global command
+
 ## 0.4.1 (released 2015-11-05)
 
 - Bugfixes and cleanup

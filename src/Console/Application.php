@@ -25,7 +25,7 @@ class Application extends Console
      *
      * @var string
      */
-    const VERSION = '1.0@dev';
+    const VERSION = '0.5.0';
 
     /**
      * Create a new application instance.
