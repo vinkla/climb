@@ -56,11 +56,13 @@ class OutdatedCommand extends Command
     {
         $climate = new CLImate();
 
+        $climate->br();
+
         try {
             $packages = $this->ladder->getOutdatedPackages();
 
             if (!$packages) {
-                $climate->br()->write('All dependencies match the latest package versions <green>:)</green>')->br();
+                $climate->write('All dependencies match the latest package versions <green>:)</green>')->br();
 
                 return;
             }
@@ -79,16 +81,16 @@ class OutdatedCommand extends Command
             }
 
             if ($outdated) {
-                $climate->br()->columns($outdated, 3);
+                $climate->columns($outdated, 3)->br();
             }
 
             if ($upgradable) {
-                $climate->br()->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.');
+                $climate->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.')->br();
 
-                $climate->br()->columns($upgradable, 3);
+                $climate->columns($upgradable, 3)->br();
             }
         } catch (ClimbException $exception) {
-            $climate->br()->error($exception->getMessage())->br();
+            $climate->error($exception->getMessage())->br();
         }
     }
 
