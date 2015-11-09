@@ -11,8 +11,6 @@
 
 namespace Vinkla\Climb;
 
-use Symfony\Component\Console\Command\Command;
-
 /**
  * This is the global command class.
  *
