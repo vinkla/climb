@@ -1,0 +1,21 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "LICENSE",
+        "./vendor/guzzle/guzzle/src/Guzzle/Http/Resources/cacert.pem"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["Tests", "tests"],
+            "in": "vendor"
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/climb",
+    "output": "climb.phar",
+    "stub": true
+}
