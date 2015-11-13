@@ -1,5 +1,7 @@
 # Composer Climb
 
+Find newer versions of dependencies than what your composer.json allows.
+
 ![climb](https://cloud.githubusercontent.com/assets/499192/9735244/a9564544-5639-11e5-8bd2-e108f3d340c1.png)
 
 A Composer version manager tool made with inspiration from [this awesome npm package](https://www.npmjs.com/package/npm-check-updates).
@@ -16,7 +18,7 @@ A Composer version manager tool made with inspiration from [this awesome npm pac
 
 Run this command to install the CLI tool globally.
 ```bash
-composer global require vinkla/climb:1.0.*@dev
+composer global require vinkla/climb
 ```
 
 Be sure to have composer binaries in your $PATH:

@@ -40,7 +40,7 @@ class Ladder
     /**
      * Create a new ladder instance.
      *
-     * @param  string $directory|null
+     * @param  string|null $directory
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class Ladder
             }
         }
 
-        if (!$packages) {
+        if (empty($packages)) {
             throw new ClimbException('We couldn\'t find any installed packages.');
         }
 
@@ -107,7 +107,7 @@ class Ladder
             }
         }
 
-        if (!$packages) {
+        if (empty($packages)) {
             throw new ClimbException('We couldn\'t find any required packages.');
         }
 
