@@ -64,10 +64,12 @@ class Ladder
         $content = $this->getFileContent('composer.lock');
 
         foreach (['packages', 'packages-dev'] as $key) {
-            if (isset($content[$key])) {
-                foreach ($content[$key] as $package) {
-                    $packages[$package['name']] = Version::normalize($package['version']);
-                }
+            if (!isset($content[$key])) {
+                continue;
+            }
+
+            foreach ($content[$key] as $package) {
+                $packages[$package['name']] = Version::normalize($package['version']);
             }
         }
 
@@ -92,14 +94,16 @@ class Ladder
         $content = $this->getFileContent('composer.json');
 
         foreach (['require', 'require-dev'] as $key) {
-            if (isset($content[$key])) {
-                foreach ($content[$key] as $package => $version) {
-                    if (!strstr($package, '/')) {
-                        continue;
-                    }
+            if (!isset($content[$key])) {
+                continue;
+            }
 
-                    $packages[$package] = $version;
+            foreach ($content[$key] as $package => $version) {
+                if (!strstr($package, '/')) {
+                    continue;
                 }
+
+                $packages[$package] = $version;
             }
         }
 
