@@ -30,7 +30,16 @@ This is required in order to use this tool.
 
 From a directory where you've a `composer.json` file run the command below to check the packages:
 ```bash
-climb
+$ climb
+
+alt-three/logger                1.0.2      →     1.1.0
+graham-campbell/exceptions      5.0.0      →     5.1.0
+jenssegers/optimus              0.1.4      →     0.2.0
+
+The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using 'composer update'.
+
+mccool/laravel-auto-presenter      4.1.0     →     4.2.0
+vinkla/hashids                     2.1.0     →     2.2.0
 ```
 
 If you want to check your global composer packages for outdated versions you can use:
