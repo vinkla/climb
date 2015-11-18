@@ -12,11 +12,11 @@
 namespace Vinkla\Climb\Commands;
 
 use League\CLImate\CLImate;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 use Vinkla\Climb\Ladder;
 use Vinkla\Climb\Version;
 
@@ -81,9 +81,9 @@ class UpdateCommand extends Command
 
             foreach ($packages as $name => list($constraint, $version, $latest)) {
                 if (Version::satisfies($latest, $constraint)) {
-                    $upgradable[$name] = $this->diff($version, $latest);;
+                    $upgradable[$name] = $this->diff($version, $latest);
                 } else {
-                    $outdated[$name] = $this->diff($version, $latest);;
+                    $outdated[$name] = $this->diff($version, $latest);
                 }
             }
 
