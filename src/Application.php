@@ -12,6 +12,8 @@
 namespace Vinkla\Climb;
 
 use Symfony\Component\Console\Application as Console;
+use Vinkla\Climb\Commands\GlobalCommand;
+use Vinkla\Climb\Commands\OutdatedCommand;
 
 /**
  * This is the application class.
