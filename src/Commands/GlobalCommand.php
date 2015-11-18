@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb;
+namespace Vinkla\Climb\Commands;
+
+use Vinkla\Climb\Ladder;
 
 /**
  * This is the global command class.
