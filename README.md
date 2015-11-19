@@ -35,14 +35,30 @@ This is required in order to use this tool.
 
 ## Usage
 
-From a directory where you've a `composer.json` file run the command below to check the packages:
+Find newer versions of dependencies than what your `composer.json` allows.
 ```bash
 climb
 ```
 
-If you want to check your global composer packages for outdated versions you can use:
+Find newer versions of dependencies than what your global `composer.json` allows.
 ```bash
 climb global
+```
+
+Update `composer.json?` dependencies versions
+```bash
+climb update
+
+# Update breaking version
+climb update --all
+```
+
+Update global `composer.json?` dependencies versions
+```bash
+climb global-update
+
+# Update breaking version
+climb global-update --all
 ```
 
 ## License

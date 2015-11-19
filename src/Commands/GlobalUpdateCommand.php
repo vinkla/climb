@@ -36,7 +36,7 @@ class GlobalUpdateCommand extends UpdateCommand
     protected function configure()
     {
         $this->setName('global-update');
-        $this->setDescription('Update newer versions of dependencies than what your global composer.json');
+        $this->setDescription('Update global composer.json dependencies versions');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Run the update on the breaking version');
 
         $this->ladder = new Ladder(getenv('HOME').'/.composer');
