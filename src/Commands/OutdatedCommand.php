@@ -34,7 +34,7 @@ class OutdatedCommand extends Command
     protected $ladder;
 
     /**
-     * Command configuration.
+     * Configure the outdated command.
      *
      * @return void
      */

@@ -42,7 +42,7 @@ class UpdateCommand extends Command
     protected $command = 'composer require';
 
     /**
-     * Command configuration.
+     * Configure the update command.
      *
      * @return void
      */

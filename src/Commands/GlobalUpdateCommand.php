@@ -29,7 +29,7 @@ class GlobalUpdateCommand extends UpdateCommand
     protected $command = 'composer global require';
 
     /**
-     * Command configuration.
+     * Configure the global update command.
      *
      * @return void
      */

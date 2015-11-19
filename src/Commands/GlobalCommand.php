@@ -22,7 +22,7 @@ use Vinkla\Climb\Ladder;
 class GlobalCommand extends OutdatedCommand
 {
     /**
-     * Command configuration.
+     * Configure the global command.
      *
      * @return void
      */
