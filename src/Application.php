@@ -29,7 +29,7 @@ class Application extends Console
      *
      * @var string
      */
-    const VERSION = '@package_version@';
+    const VERSION = '0.6.0';
 
     /**
      * Create a new application instance.
