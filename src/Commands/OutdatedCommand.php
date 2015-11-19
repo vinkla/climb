@@ -57,7 +57,6 @@ class OutdatedCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $climate = new CLImate();
-
         $climate->br();
 
         try {
