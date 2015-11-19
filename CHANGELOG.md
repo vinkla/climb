@@ -6,6 +6,7 @@
 - Add global-update command
 - Lower Symfony version requirement
 - Updated tests
+- Add phar build
 
 ## 0.5.0 (released 2015-11-09)
 
