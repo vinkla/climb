@@ -50,7 +50,7 @@ class UpdateCommand extends Command
     {
         $this->setName('update');
         $this->setDescription('Update newer versions of dependencies than what your composer.json');
-        $this->addOption('all', null, InputOption::VALUE_NONE, 'Run the update on the breaking version.');
+        $this->addOption('all', null, InputOption::VALUE_NONE, 'Run the update on the breaking version');
 
         $this->ladder = new Ladder();
     }
