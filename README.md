@@ -45,7 +45,7 @@ Find newer versions of dependencies than what your global `composer.json` allows
 climb global
 ```
 
-Update `composer.json` dependencies versions
+Update `composer.json` dependencies versions.
 ```bash
 climb update
 
@@ -53,7 +53,7 @@ climb update
 climb update --all
 ```
 
-Update global `composer.json` dependencies versions
+Update global `composer.json` dependencies versions.
 ```bash
 climb global-update
 
