@@ -9,20 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Vinkla\Climb;
+namespace Vinkla\Climb\Commands;
 
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
+use Vinkla\Climb\Ladder;
+use Vinkla\Climb\Version;
 
 /**
- * This is the outdated command class.
+ * This is the update command class.
  *
- * @author Vincent Klaiber <hello@vinkla.com>
- * @author Jens Segers <hello@jenssegers.com>
+ * @author Joseph Cohen <joe@alt-three.com>
  */
-class OutdatedCommand extends Command
+class UpdateCommand extends Command
 {
     /**
      * The Ladder instance.
@@ -32,14 +35,22 @@ class OutdatedCommand extends Command
     protected $ladder;
 
     /**
+     * The composer command to run.
+     *
+     * @return string
+     */
+    protected $command = 'composer require';
+
+    /**
      * Command configuration.
      *
      * @return void
      */
     protected function configure()
     {
-        $this->setName('outdated');
-        $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
+        $this->setName('update');
+        $this->setDescription('Update newer versions of dependencies than what your composer.json');
+        $this->addOption('all', null, InputOption::VALUE_NONE, 'Run the update on the breaking version.');
 
         $this->ladder = new Ladder();
     }
@@ -56,8 +67,6 @@ class OutdatedCommand extends Command
     {
         $climate = new CLImate();
 
-        $climate->br();
-
         try {
             $packages = $this->ladder->getOutdatedPackages();
 
@@ -72,23 +81,31 @@ class OutdatedCommand extends Command
 
             foreach ($packages as $name => list($constraint, $version, $latest)) {
                 if (Version::satisfies($latest, $constraint)) {
-                    $latest = $this->diff($version, $latest);
-                    $upgradable[] = [$name, $version, '→', $latest];
+                    $upgradable[$name] = $this->diff($version, $latest);
                 } else {
-                    $latest = $this->diff($version, $latest);
-                    $outdated[] = [$name, $version, '→', $latest];
+                    $outdated[$name] = $this->diff($version, $latest);
                 }
             }
 
-            if ($outdated) {
-                $climate->columns($outdated, 3)->br();
+            if ($input->getOption('all')) {
+                $upgradable = array_merge($upgradable, $outdated);
             }
 
-            if ($upgradable) {
-                $climate->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.')->br();
+            if (empty($upgradable)) {
+                $climate->write('Nothing to install or update')->br();
 
-                $climate->columns($upgradable, 3)->br();
+                return;
             }
+
+            foreach ($upgradable as $package => $version) {
+                $this->command .= " {$package}=^$version";
+            }
+
+            $process = new Process($this->command, null, array_merge($_SERVER, $_ENV), null, null);
+
+            $process->run(function ($type, $line) use ($output) {
+                $output->write($line);
+            });
         } catch (ClimbException $exception) {
             $climate->error($exception->getMessage())->br();
         }
@@ -114,6 +131,6 @@ class OutdatedCommand extends Command
             $needle++;
         }
 
-        return substr($latest, 0, $needle).'<green>'.substr($latest, $needle).'</green>';
+        return substr($latest, 0, $needle).substr($latest, $needle);
     }
 }
