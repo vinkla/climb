@@ -40,10 +40,10 @@ class Application extends Console
     {
         parent::__construct('Climb', self::VERSION);
 
-        $this->add(new OutdatedCommand());
         $this->add(new GlobalCommand());
-        $this->add(new UpdateCommand());
         $this->add(new GlobalUpdateCommand());
+        $this->add(new OutdatedCommand());
+        $this->add(new UpdateCommand());
 
         $this->setDefaultCommand('outdated');
     }
