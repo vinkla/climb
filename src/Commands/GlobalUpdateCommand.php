@@ -37,7 +37,7 @@ class GlobalUpdateCommand extends UpdateCommand
     {
         $this->setName('global-update');
         $this->setDescription('Update global composer.json dependencies versions');
-        $this->addOption('all', null, InputOption::VALUE_NONE, 'Run the update on breaking versions');
+        $this->addOption('all', null, InputOption::VALUE_NONE, 'Run update on breaking versions');
 
         $this->ladder = new Ladder(getenv('HOME').'/.composer');
     }
