@@ -21,17 +21,27 @@ vinkla/hashids                  1.1.0      →     2.2.0
 
 ## Installation
 
-Run this command to install the CLI tool globally.
+You can install Climb with either [Homebrew](http://brew.sh/) (recommended) or globally with [Composer](https://getcomposer.org/).
+
+### Homebrew
+
+Run this command to install Climb with Homebrew.
+
+```bash
+brew install homebrew/php/climb
+```
+
+### Composer
+
+Run this command to install Climb globally with Composer.
 ```bash
 composer global require vinkla/climb
 ```
 
-Be sure to have composer binaries in your $PATH:
+Be sure to have composer binaries in your `$PATH`:
 ```
 export PATH=${PATH}:${HOME}/.composer/vendor/bin;
 ```
-
-This is required in order to use this tool.
 
 ## Usage
 
