@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.6.1 (released 2015-11-20)
+
+- Exclude unstable versions
+
 ## 0.6.0 (released 2015-11-20)
 
 - Add update command

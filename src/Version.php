@@ -57,8 +57,8 @@ class Version extends Semver
 
         // Get the highest version number.
         $latest = array_reduce($versions, function ($carry, $item) {
-            // Skip dev versions.
-            if (VersionParser::parseStability($item) === 'dev') {
+            // Skip unstable versions.
+            if (VersionParser::parseStability($item) !== 'stable') {
                 return $carry;
             }
 
