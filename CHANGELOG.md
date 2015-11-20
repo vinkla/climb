@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.6.0 (upcoming)
+## 0.6.0 (released 2015-11-20)
 
 - Add update command
 - Add global-update command
