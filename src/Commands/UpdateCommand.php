@@ -13,8 +13,9 @@ namespace Vinkla\Climb\Commands;
 
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Vinkla\Climb\Ladder;
@@ -50,9 +51,8 @@ class UpdateCommand extends Command
     {
         $this->setName('update');
         $this->setDescription('Update composer.json dependencies versions');
+        $this->addArgument('directory', InputArgument::OPTIONAL, 'Composer files directory', getcwd());
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Run update on breaking versions');
-
-        $this->ladder = new Ladder();
     }
 
     /**
@@ -65,6 +65,10 @@ class UpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->ladder) {
+            $this->ladder = new Ladder($input->getArgument('directory'));
+        }
+
         $climate = new CLImate();
         $climate->br();
 
