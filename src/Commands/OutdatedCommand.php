@@ -14,6 +14,7 @@ namespace Vinkla\Climb\Commands;
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
 use Vinkla\Climb\Version;
@@ -42,6 +43,9 @@ class OutdatedCommand extends Command
     {
         $this->setName('outdated');
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
+        $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Check outdated dependencies');
+        $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Check upgradable dependencies');
+        $this->addOption('fail', null, InputOption::VALUE_NONE, 'Fail when outdated and/or upgradable');
 
         $this->ladder = new Ladder();
     }
@@ -73,9 +77,11 @@ class OutdatedCommand extends Command
 
             foreach ($packages as $name => list($constraint, $version, $latest)) {
                 if (Version::satisfies($latest, $constraint)) {
-                    $latest = $this->diff($version, $latest);
-                    $upgradable[] = [$name, $version, '→', $latest];
-                } else {
+                    if ($input->getOption('upgradable') || !$input->getOption('outdated')) {
+                        $latest = $this->diff($version, $latest);
+                        $upgradable[] = [$name, $version, '→', $latest];
+                    }
+                } elseif ($input->getOption('outdated') || !$input->getOption('upgradable')) {
                     $latest = $this->diff($version, $latest);
                     $outdated[] = [$name, $version, '→', $latest];
                 }
@@ -89,6 +95,10 @@ class OutdatedCommand extends Command
                 $climate->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.')->br();
 
                 $climate->columns($upgradable, 3)->br();
+            }
+
+            if ($input->getOption('fail') && ($outdated || $upgradable)) {
+                return 1;
             }
         } catch (ClimbException $exception) {
             $climate->error($exception->getMessage())->br();
