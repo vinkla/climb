@@ -43,11 +43,11 @@ class OutdatedCommand extends Command
     {
         $this->setName('outdated');
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
-        $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Check outdated dependencies');
-        $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Check upgradable dependencies');
+        $this->addOption('no-outdated', null, InputOption::VALUE_NONE, 'Check outdated dependencies');
+        $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Check upgradable dependencies');
         $this->addOption('fail', null, InputOption::VALUE_NONE, 'Fail when outdated and/or upgradable');
 
-        $this->ladder = new Ladder();
+        $this->ladder = new Ladder(dirname(dirname(dirname(__DIR__))) . '/janitor');
     }
 
     /**
@@ -77,11 +77,11 @@ class OutdatedCommand extends Command
 
             foreach ($packages as $name => list($constraint, $version, $latest)) {
                 if (Version::satisfies($latest, $constraint)) {
-                    if ($input->getOption('upgradable') || !$input->getOption('outdated')) {
+                    if (!$input->getOption('no-upgradable')) {
                         $latest = $this->diff($version, $latest);
                         $upgradable[] = [$name, $version, '→', $latest];
                     }
-                } elseif ($input->getOption('outdated') || !$input->getOption('upgradable')) {
+                } elseif (!$input->getOption('no-outdated')) {
                     $latest = $this->diff($version, $latest);
                     $outdated[] = [$name, $version, '→', $latest];
                 }
@@ -102,6 +102,8 @@ class OutdatedCommand extends Command
             }
         } catch (ClimbException $exception) {
             $climate->error($exception->getMessage())->br();
+
+            return 1;
         }
     }
 
