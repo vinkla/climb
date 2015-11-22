@@ -11,10 +11,6 @@
 
 namespace Vinkla\Climb;
 
-use Composer\Semver\Comparator;
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Packagist\Api\Client;
-
 /**
  * This is the ladder class.
  *
@@ -46,7 +42,6 @@ class Ladder
      */
     public function __construct($directory = null)
     {
-        $this->packagist = new Client();
         $this->directory = $directory ?: getcwd();
     }
 
@@ -132,40 +127,17 @@ class Ladder
 
         $outdated = [];
 
-        foreach ($packages as $package => $version) {
-            if (!$latest = $this->getLatestVersion($package)) {
-                continue;
-            }
+        foreach ($packages as $name => $version) {
+            $package = new Package($name, $version);
 
-            if (Comparator::lessThan($version, $latest)) {
-                $constraint = $required[$package];
+            if ($package->isOutdated()) {
+                $constraint = $required[$name];
 
-                $outdated[$package] = [$constraint, $version, $latest];
+                $outdated[$name] = [$constraint, $version, $package->getLatestVersion()];
             }
         }
 
         return $outdated;
-    }
-
-    /**
-     * Get latest package version.
-     *
-     * @param string $name
-     *
-     * @return string|void
-     */
-    public function getLatestVersion($name)
-    {
-        try {
-            // Get all package versions.
-            $versions = array_map(function ($version) {
-                return $version->getVersion();
-            }, $this->packagist->get($name)->getVersions());
-
-            return Version::latest($versions);
-        } catch (ClientErrorResponseException $e) {
-            return;
-        }
     }
 
     /**
