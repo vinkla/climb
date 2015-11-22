@@ -14,12 +14,12 @@ namespace Vinkla\Climb\Commands;
 use Vinkla\Climb\Ladder;
 
 /**
- * This is the global command class.
+ * This is the global outdated command class.
  *
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
  */
-class GlobalCommand extends OutdatedCommand
+class GlobalOutdatedCommand extends OutdatedCommand
 {
     /**
      * Configure the global command.
