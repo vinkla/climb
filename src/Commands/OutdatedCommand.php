@@ -47,7 +47,7 @@ class OutdatedCommand extends Command
         $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Check upgradable dependencies');
         $this->addOption('fail', null, InputOption::VALUE_NONE, 'Fail when outdated and/or upgradable');
 
-        $this->ladder = new Ladder(dirname(dirname(dirname(__DIR__))) . '/janitor');
+        $this->ladder = new Ladder();
     }
 
     /**
