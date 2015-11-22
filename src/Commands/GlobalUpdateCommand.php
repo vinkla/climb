@@ -22,7 +22,7 @@ use Vinkla\Climb\Ladder;
 class GlobalUpdateCommand extends UpdateCommand
 {
     /**
-     * The composer command to run.
+     * The Composer command to run.
      *
      * @return string
      */

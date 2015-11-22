@@ -11,6 +11,10 @@
 
 namespace Vinkla\Climb;
 
+use InvalidArgumentException;
+use LogicException;
+use UnexpectedValueException;
+
 /**
  * This is the ladder class.
  *
@@ -36,7 +40,7 @@ class Ladder
     /**
      * Create a new ladder instance.
      *
-     * @param  string|null $directory
+     * @param string|null $directory
      *
      * @return void
      */
@@ -48,11 +52,11 @@ class Ladder
     /**
      * Get installed package versions.
      *
-     * @throws \Vinkla\Climb\ClimbException
+     * @throws \LogicException
      *
      * @return array
      */
-    public function getInstalledPackages()
+    protected function getInstalledPackages()
     {
         $packages = [];
 
@@ -69,7 +73,7 @@ class Ladder
         }
 
         if (empty($packages)) {
-            throw new ClimbException('We couldn\'t find any installed packages.');
+            throw new LogicException('We couldn\'t find any installed packages.');
         }
 
         return $packages;
@@ -78,11 +82,11 @@ class Ladder
     /**
      * Get required package versions.
      *
-     * @throws \Vinkla\Climb\ClimbException
+     * @throws \LogicException
      *
      * @return array
      */
-    public function getRequiredPackages()
+    protected function getRequiredPackages()
     {
         $packages = [];
 
@@ -103,7 +107,7 @@ class Ladder
         }
 
         if (empty($packages)) {
-            throw new ClimbException('We couldn\'t find any required packages.');
+            throw new LogicException('We couldn\'t find any required packages.');
         }
 
         return $packages;
@@ -145,7 +149,7 @@ class Ladder
      *
      * @param string $file
      *
-     * @throws \Vinkla\Climb\ClimbException
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
@@ -154,7 +158,7 @@ class Ladder
         $filePath = $this->directory.'/'.$file;
 
         if (!file_exists($filePath)) {
-            throw new ClimbException("We couldn't find any file [$filePath].");
+            throw new InvalidArgumentException("We couldn't find any file [$filePath].");
         }
 
         return json_decode(file_get_contents($filePath), true);

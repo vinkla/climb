@@ -11,8 +11,6 @@
 
 namespace Vinkla\Climb\Commands;
 
-use League\CLImate\CLImate;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
@@ -24,7 +22,7 @@ use Vinkla\Climb\Version;
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
  */
-class OutdatedCommand extends Command
+class OutdatedCommand extends AbstractCommand
 {
     /**
      * The Ladder instance.
@@ -56,42 +54,36 @@ class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $climate = new CLImate();
-        $climate->br();
+        $packages = $this->ladder->getOutdatedPackages();
 
-        try {
-            $packages = $this->ladder->getOutdatedPackages();
+        if (!count($packages)) {
+            $output->writeln('All dependencies match the latest package versions <info>:)</info>');
 
-            if (!$packages) {
-                $climate->write('All dependencies match the latest package versions <green>:)</green>')->br();
+            return;
+        }
 
-                return;
+        $outdated = [];
+        $upgradable = [];
+
+        foreach ($packages as $name => list($constraint, $version, $latest)) {
+            if (Version::satisfies($latest, $constraint)) {
+                $latest = $this->diff($version, $latest);
+                $upgradable[] = [$name, $version, '→', $latest];
+            } else {
+                $latest = $this->diff($version, $latest);
+                $outdated[] = [$name, $version, '→', $latest];
             }
+        }
 
-            $outdated = [];
-            $upgradable = [];
+        $output->newLine();
 
-            foreach ($packages as $name => list($constraint, $version, $latest)) {
-                if (Version::satisfies($latest, $constraint)) {
-                    $latest = $this->diff($version, $latest);
-                    $upgradable[] = [$name, $version, '→', $latest];
-                } else {
-                    $latest = $this->diff($version, $latest);
-                    $outdated[] = [$name, $version, '→', $latest];
-                }
-            }
+        if ($outdated) {
+            $output->columns($outdated);
+        }
 
-            if ($outdated) {
-                $climate->columns($outdated, 3)->br();
-            }
-
-            if ($upgradable) {
-                $climate->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.')->br();
-
-                $climate->columns($upgradable, 3)->br();
-            }
-        } catch (ClimbException $exception) {
-            $climate->error($exception->getMessage())->br();
+        if ($upgradable) {
+            $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.');
+            $output->columns($upgradable);
         }
     }
 
