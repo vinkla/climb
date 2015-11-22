@@ -126,18 +126,18 @@ class Ladder
         $installed = $this->getInstalledPackages();
         $required = $this->getRequiredPackages();
 
+        $outdated = [];
+
         // Get the installed version number of the required packages.
         $packages = array_intersect_key($installed, $required);
-
-        $outdated = [];
 
         foreach ($packages as $name => $version) {
             $package = new Package($name, $version);
 
             if ($package->isOutdated()) {
-                $constraint = $required[$name];
+                $package->setConstraint($required[$name]);
 
-                $outdated[$name] = [$constraint, $version, $package->getLatestVersion()];
+                $outdated[] = $package;
             }
         }
 

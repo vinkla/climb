@@ -56,26 +56,26 @@ class OutdatedCommand extends AbstractCommand
     {
         $packages = $this->ladder->getOutdatedPackages();
 
+        $output->newLine();
+
         if (!count($packages)) {
             $output->writeln('All dependencies match the latest package versions <info>:)</info>');
 
-            return;
+            return 0;
         }
 
         $outdated = [];
         $upgradable = [];
 
-        foreach ($packages as $name => list($constraint, $version, $latest)) {
-            if (Version::satisfies($latest, $constraint)) {
-                $latest = $this->diff($version, $latest);
-                $upgradable[] = [$name, $version, '→', $latest];
+        foreach ($packages as $package) {
+            $diff = Version::diff($package->getVersion(), $package->getLatestVersion());
+
+            if ($package->isUpgradable()) {
+                $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
             } else {
-                $latest = $this->diff($version, $latest);
-                $outdated[] = [$name, $version, '→', $latest];
+                $outdated[] = [$package->getName(), $package->getVersion(), '→', $diff];
             }
         }
-
-        $output->newLine();
 
         if ($outdated) {
             $output->columns($outdated);
@@ -85,28 +85,7 @@ class OutdatedCommand extends AbstractCommand
             $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using \'composer update\'.');
             $output->columns($upgradable);
         }
-    }
 
-    /**
-     * Get the diff between the current and latest version.
-     *
-     * @param string $current
-     * @param string $latest
-     *
-     * @return string
-     */
-    private function diff($current, $latest)
-    {
-        $needle = 0;
-
-        while ($needle < strlen($current) && $needle < strlen($latest)) {
-            if ($current[$needle] !== $latest[$needle]) {
-                break;
-            }
-
-            $needle++;
-        }
-
-        return substr($latest, 0, $needle).'<green>'.substr($latest, $needle).'</green>';
+        return 0;
     }
 }

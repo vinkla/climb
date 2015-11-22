@@ -39,7 +39,14 @@ class Package
      *
      * @var string
      */
-    protected $latest;
+    protected $latestVersion;
+
+    /**
+     * The package version constraint.
+     *
+     * @var string
+     */
+    protected $constraint;
 
     /**
      * Create a new package instance.
@@ -57,22 +64,6 @@ class Package
     }
 
     /**
-     * Get latest version.
-     *
-     * @return string|void
-     */
-    public function getLatestVersion()
-    {
-        if (!empty($this->latest)) {
-            return $this->latest;
-        }
-
-        $this->latest = $this->packagist->getLatestVersion($this->name);
-
-        return $this->latest;
-    }
-
-    /**
      * Check if the package is outdated.
      *
      * @return bool
@@ -80,5 +71,63 @@ class Package
     public function isOutdated()
     {
         return Comparator::lessThan($this->version, $this->getLatestVersion());
+    }
+
+    /**
+     * Check if the package is upgradable.
+     *
+     * @return bool
+     */
+    public function isUpgradable()
+    {
+        return Version::satisfies($this->latestVersion, $this->constraint);
+    }
+
+    /**
+     * Get the package name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get the package version.
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * Get latest version.
+     *
+     * @return string|void
+     */
+    public function getLatestVersion()
+    {
+        if (!empty($this->latestVersion)) {
+            return $this->latestVersion;
+        }
+
+        $this->latestVersion = $this->packagist->getLatestVersion($this->name);
+
+        return $this->latestVersion;
+    }
+
+    /**
+     * Set the version constraint.
+     *
+     * @param string $constraint
+     *
+     * @return void
+     */
+    public function setConstraint($constraint)
+    {
+        $this->constraint = $constraint;
     }
 }

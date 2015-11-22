@@ -12,7 +12,6 @@
 namespace Vinkla\Climb\Commands;
 
 use Exception;
-use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,13 +34,10 @@ abstract class AbstractCommand extends Command
      *
      * @return int|null|void
      */
-    public function run(InputInterface $input, OutputInterface $output) {
-        try {
-            $output = new OutputStyle($input, $output);
+    public function run(InputInterface $input, OutputInterface $output)
+    {
+        $output = new OutputStyle($input, $output);
 
-            parent::run($input, $output);
-        } catch(Exception $exception) {
-            $output->writeln(sprintf('<error>%s</error>', $exception->getMessage()));
-        }
+        parent::run($input, $output);
     }
 }

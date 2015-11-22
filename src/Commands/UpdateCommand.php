@@ -11,21 +11,18 @@
 
 namespace Vinkla\Climb\Commands;
 
-use League\CLImate\CLImate;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Vinkla\Climb\Ladder;
-use Vinkla\Climb\Version;
 
 /**
  * This is the update command class.
  *
  * @author Joseph Cohen <joe@alt-three.com>
  */
-class UpdateCommand extends Command
+class UpdateCommand extends AbstractCommand
 {
     /**
      * The Ladder instance.
@@ -65,73 +62,47 @@ class UpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $climate = new CLImate();
-        $climate->br();
+        $packages = $this->ladder->getOutdatedPackages();
 
-        try {
-            $packages = $this->ladder->getOutdatedPackages();
+        if (!$packages) {
+            $output->writeln('All dependencies match the latest package versions <green>:)</green>');
 
-            if (!$packages) {
-                $climate->write('All dependencies match the latest package versions <green>:)</green>')->br();
-
-                return;
-            }
-
-            $outdated = [];
-            $upgradable = [];
-
-            foreach ($packages as $name => list($constraint, $version, $latest)) {
-                if (Version::satisfies($latest, $constraint)) {
-                    $upgradable[$name] = $this->diff($version, $latest);
-                } else {
-                    $outdated[$name] = $this->diff($version, $latest);
-                }
-            }
-
-            if ($input->getOption('all')) {
-                $upgradable = array_merge($upgradable, $outdated);
-            }
-
-            if (empty($upgradable)) {
-                $climate->write('Nothing to install or update')->br();
-
-                return;
-            }
-
-            foreach ($upgradable as $package => $version) {
-                $this->command .= " {$package}=^$version";
-            }
-
-            $process = new Process($this->command, null, array_merge($_SERVER, $_ENV), null, null);
-
-            $process->run(function ($type, $line) use ($output) {
-                $output->write($line);
-            });
-        } catch (ClimbException $exception) {
-            $climate->error($exception->getMessage())->br();
-        }
-    }
-
-    /**
-     * Get the diff between the current and latest version.
-     *
-     * @param string $current
-     * @param string $latest
-     *
-     * @return string
-     */
-    private function diff($current, $latest)
-    {
-        $needle = 0;
-
-        while ($needle < strlen($current) && $needle < strlen($latest)) {
-            if ($current[$needle] !== $latest[$needle]) {
-                break;
-            }
-
-            $needle++;
+            return 0;
         }
 
-        return substr($latest, 0, $needle).substr($latest, $needle);
+        $outdated = [];
+        $upgradable = [];
+
+        foreach ($packages as $package) {
+            if ($package->isUpgradable()) {
+                $upgradable[$package->getName()] = $package->getLatestVersion();
+            } else {
+                $outdated[$package->getName()] = $package->getLatestVersion();
+            }
+        }
+
+        if ($input->getOption('all')) {
+            $upgradable = array_merge($upgradable, $outdated);
+        }
+
+        if (empty($upgradable)) {
+            $output->note('Nothing to install or update, did you forget the flag --all?');
+
+            return 0;
+        }
+
+        foreach ($upgradable as $package => $version) {
+            $this->command .= " {$package}=^$version";
+        }
+
+        $output->newLine();
+
+        $process = new Process($this->command, null, array_merge($_SERVER, $_ENV), null, null);
+
+        $process->run(function ($type, $line) use ($output) {
+            $output->write($line);
+        });
+
+        return 0;
     }
 }
