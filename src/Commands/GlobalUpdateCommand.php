@@ -17,6 +17,7 @@ use Vinkla\Climb\Ladder;
 /**
  * This is the global update command class.
  *
+ * @author Vincent Klaiber <hello@vinkla.com>
  * @author Joseph Cohen <joe@alt-three.com>
  */
 class GlobalUpdateCommand extends UpdateCommand

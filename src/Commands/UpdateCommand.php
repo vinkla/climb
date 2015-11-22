@@ -20,9 +20,10 @@ use Vinkla\Climb\Ladder;
 /**
  * This is the update command class.
  *
+ * @author Vincent Klaiber <hello@vinkla.com>
  * @author Joseph Cohen <joe@alt-three.com>
  */
-class UpdateCommand extends AbstractCommand
+class UpdateCommand extends Command
 {
     /**
      * The Ladder instance.

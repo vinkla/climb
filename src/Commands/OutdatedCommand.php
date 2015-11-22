@@ -22,7 +22,7 @@ use Vinkla\Climb\Version;
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
  */
-class OutdatedCommand extends AbstractCommand
+class OutdatedCommand extends Command
 {
     /**
      * The Ladder instance.

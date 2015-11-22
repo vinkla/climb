@@ -12,17 +12,17 @@
 namespace Vinkla\Climb\Commands;
 
 use Exception;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\OutputStyle;
 
 /**
- * This is the abstract command class.
+ * This is the command class.
  *
  * @author Vincent Klaiber <vincent@schimpanz.com>
  */
-abstract class AbstractCommand extends Command
+class Command extends BaseCommand
 {
     /**
      * Run the command.
