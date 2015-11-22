@@ -63,7 +63,7 @@ class OutdatedCommand extends Command
 
         try {
             $format = $input->getOption('format');
-            $formatClass = '\\Vinkla\\Climb\\Formatter\\' . ucfirst($format);
+            $formatClass = '\\Vinkla\\Climb\\Formatter\\'.ucfirst($format);
             if (!class_exists($formatClass)) {
                 throw new ClimbException(sprintf('Output format "%s" is not valid', $format));
             }

@@ -21,7 +21,7 @@ use League\CLImate\CLImate;
 class Console implements Format
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function render(CLImate $climate, array $outdated, array $upgradable)
     {
@@ -71,7 +71,7 @@ class Console implements Format
         }
 
         $package[2] = '→';
-        $package[3] = substr($latest, 0, $needle) . '<green>' . substr($latest, $needle) . '</green>';
+        $package[3] = substr($latest, 0, $needle).'<green>'.substr($latest, $needle).'</green>';
 
         return $package;
     }

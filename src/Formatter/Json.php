@@ -21,7 +21,7 @@ use League\CLImate\CLImate;
 class Json implements Format
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function render(CLImate $climate, array $outdated, array $upgradable)
     {
@@ -56,7 +56,7 @@ class Json implements Format
             $output[] = [
                 $package[0] => [
                     'current' => $package[1],
-                    'update'  => $package[2],
+                    'update' => $package[2],
                 ],
             ];
         }

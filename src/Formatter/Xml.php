@@ -23,7 +23,7 @@ use League\CLImate\CLImate;
 class Xml implements Format
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function render(CLImate $climate, array $outdated, array $upgradable)
     {
