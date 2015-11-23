@@ -16,7 +16,7 @@ use Composer\Semver\Comparator;
 /**
  * This is the package class.
  *
- * @author Vincent Klaiber <vincent@schimpanz.com>
+ * @author Vincent Klaiber <hello@vinkla.com>
  */
 class Package
 {

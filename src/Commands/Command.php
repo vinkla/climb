@@ -20,7 +20,7 @@ use Vinkla\Climb\OutputStyle;
 /**
  * This is the command class.
  *
- * @author Vincent Klaiber <vincent@schimpanz.com>
+ * @author Vincent Klaiber <hello@vinkla.com>
  */
 class Command extends BaseCommand
 {

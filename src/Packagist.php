@@ -17,7 +17,7 @@ use Packagist\Api\Client;
 /**
  * This is the packagist class.
  *
- * @author Vincent Klaiber <vincent@schimpanz.com>
+ * @author Vincent Klaiber <hello@vinkla.com>
  */
 class Packagist extends Client
 {
