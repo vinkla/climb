@@ -11,6 +11,7 @@
 
 namespace Vinkla\Climb\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
@@ -40,8 +41,7 @@ class OutdatedCommand extends Command
     {
         $this->setName('outdated');
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
-
-        $this->ladder = new Ladder();
+        $this->addArgument('directory', InputArgument::OPTIONAL, 'Composer files directory', getcwd());
     }
 
     /**
@@ -54,6 +54,10 @@ class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->ladder) {
+            $this->ladder = new Ladder($input->getArgument('directory'));
+        }
+
         $packages = $this->ladder->getOutdatedPackages();
 
         $output->newLine();

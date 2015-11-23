@@ -162,4 +162,14 @@ class Ladder
 
         return json_decode(file_get_contents($filePath), true);
     }
+
+    /**
+     * Retrieve current directory.
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
 }
