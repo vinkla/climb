@@ -11,6 +11,7 @@
 
 namespace Vinkla\Climb\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,9 +49,8 @@ class UpdateCommand extends Command
     {
         $this->setName('update');
         $this->setDescription('Update composer.json dependencies versions');
+        $this->addArgument('directory', InputArgument::OPTIONAL, 'Composer files directory', getcwd());
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Run update on breaking versions');
-
-        $this->ladder = new Ladder();
     }
 
     /**
@@ -63,6 +63,10 @@ class UpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->ladder) {
+            $this->ladder = new Ladder($input->getArgument('directory'));
+        }
+
         $packages = $this->ladder->getOutdatedPackages();
 
         if (!$packages) {
@@ -98,7 +102,13 @@ class UpdateCommand extends Command
 
         $output->newLine();
 
-        $process = new Process($this->command, null, array_merge($_SERVER, $_ENV), null, null);
+        $process = new Process(
+            $this->command,
+            $this->ladder->getDirectory(),
+            array_merge($_SERVER, $_ENV),
+            null,
+            null
+        );
 
         $process->run(function ($type, $line) use ($output) {
             $output->write($line);
