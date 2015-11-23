@@ -1,10 +1,11 @@
 <?php
+
 namespace Vinkla\Climb;
 
 use League\CLImate\CLImate;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * This is the output style class.

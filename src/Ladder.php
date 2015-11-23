@@ -13,7 +13,6 @@ namespace Vinkla\Climb;
 
 use InvalidArgumentException;
 use LogicException;
-use UnexpectedValueException;
 
 /**
  * This is the ladder class.
