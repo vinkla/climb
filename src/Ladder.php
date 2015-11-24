@@ -11,9 +11,6 @@
 
 namespace Vinkla\Climb;
 
-use InvalidArgumentException;
-use LogicException;
-
 /**
  * This is the ladder class.
  *
@@ -49,70 +46,6 @@ class Ladder
     }
 
     /**
-     * Get installed package versions.
-     *
-     * @throws \LogicException
-     *
-     * @return array
-     */
-    protected function getInstalledPackages()
-    {
-        $packages = [];
-
-        $content = $this->getFileContent('composer.lock');
-
-        foreach (['packages', 'packages-dev'] as $key) {
-            if (!isset($content[$key])) {
-                continue;
-            }
-
-            foreach ($content[$key] as $package) {
-                $packages[$package['name']] = $package['version'];
-            }
-        }
-
-        if (empty($packages)) {
-            throw new LogicException('We couldn\'t find any installed packages.');
-        }
-
-        return $packages;
-    }
-
-    /**
-     * Get required package versions.
-     *
-     * @throws \LogicException
-     *
-     * @return array
-     */
-    protected function getRequiredPackages()
-    {
-        $packages = [];
-
-        $content = $this->getFileContent('composer.json');
-
-        foreach (['require', 'require-dev'] as $key) {
-            if (!isset($content[$key])) {
-                continue;
-            }
-
-            foreach ($content[$key] as $package => $version) {
-                if (!strstr($package, '/')) {
-                    continue;
-                }
-
-                $packages[$package] = $version;
-            }
-        }
-
-        if (empty($packages)) {
-            throw new LogicException('We couldn\'t find any required packages.');
-        }
-
-        return $packages;
-    }
-
-    /**
      * Get outdated packages with their current and latest version.
      *
      * @throws \Vinkla\Climb\ClimbException
@@ -121,9 +54,11 @@ class Ladder
      */
     public function getOutdatedPackages()
     {
+        $composer = new Composer($this->directory);
+
         // Get all installed and required packages.
-        $installed = $this->getInstalledPackages();
-        $required = $this->getRequiredPackages();
+        $installed = $composer->getInstalledPackages();
+        $required = $composer->getRequiredPackages();
 
         $outdated = [];
 
@@ -141,25 +76,5 @@ class Ladder
         }
 
         return $outdated;
-    }
-
-    /**
-     * Get file content.
-     *
-     * @param string $file
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return array
-     */
-    private function getFileContent($file)
-    {
-        $filePath = $this->directory.'/'.$file;
-
-        if (!file_exists($filePath)) {
-            throw new InvalidArgumentException("We couldn't find any file [$filePath].");
-        }
-
-        return json_decode(file_get_contents($filePath), true);
     }
 }
