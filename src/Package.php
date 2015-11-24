@@ -21,45 +21,47 @@ use Composer\Semver\Comparator;
 class Package
 {
     /**
-     * The package name.
+     * The package's name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * The package version.
+     * The package's version.
      *
      * @var string
      */
     protected $version;
 
     /**
-     * The package latest version.
+     * The package's latest version.
      *
      * @var string
      */
     protected $latestVersion;
 
     /**
-     * The package version constraint.
+     * The package's non-normalized version.
      *
      * @var string
      */
-    protected $constraint;
+    protected $prettyVersion;
 
     /**
      * Create a new package instance.
      *
      * @param string $name
      * @param string $version
+     * @param string $prettyVersion
      *
      * @return void
      */
-    public function __construct($name, $version)
+    public function __construct($name, $version, $prettyVersion)
     {
         $this->name = $name;
         $this->version = $version;
+        $this->prettyVersion = $prettyVersion;
         $this->packagist = new Packagist();
     }
 
@@ -80,11 +82,11 @@ class Package
      */
     public function isUpgradable()
     {
-        return Version::satisfies($this->latestVersion, $this->constraint);
+        return Version::satisfies($this->getLatestVersion(), $this->prettyVersion);
     }
 
     /**
-     * Get the package name.
+     * Get the package's name.
      *
      * @return string
      */
@@ -94,13 +96,23 @@ class Package
     }
 
     /**
-     * Get the package version.
+     * Get the package's version.
      *
      * @return string
      */
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * Get the package's non-normalized version.
+     *
+     * @return string
+     */
+    public function getPrettyVersion()
+    {
+        return $this->prettyVersion;
     }
 
     /**

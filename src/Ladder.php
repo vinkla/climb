@@ -67,7 +67,7 @@ class Ladder
             }
 
             foreach ($content[$key] as $package) {
-                $packages[$package['name']] = Version::normalize($package['version']);
+                $packages[$package['name']] = $package['version'];
             }
         }
 
@@ -131,7 +131,7 @@ class Ladder
         $packages = array_intersect_key($installed, $required);
 
         foreach ($packages as $name => $version) {
-            $package = new Package($name, $version);
+            $package = new Package($name, Version::normalize($version), $version);
 
             if ($package->isOutdated()) {
                 $package->setConstraint($required[$name]);
