@@ -12,6 +12,13 @@ use LogicException;
 class Composer
 {
     /**
+     * The directory path.
+     *
+     * @var string
+     */
+    protected $directory;
+
+    /**
      * Create a new composer instance.
      *
      * @param string $directory

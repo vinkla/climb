@@ -20,18 +20,11 @@ namespace Vinkla\Climb;
 class Ladder
 {
     /**
-     * Packagist client instance.
-     *
-     * @var \Packagist\Api\Client
-     */
-    protected $packagist;
-
-    /**
-     * The project directory.
+     * The composer instance.
      *
      * @var string
      */
-    protected $directory;
+    protected $composer;
 
     /**
      * Create a new ladder instance.
@@ -42,7 +35,7 @@ class Ladder
      */
     public function __construct($directory = null)
     {
-        $this->directory = $directory ?: getcwd();
+        $this->composer = new Composer($directory ?: getcwd());
     }
 
     /**
@@ -54,11 +47,9 @@ class Ladder
      */
     public function getOutdatedPackages()
     {
-        $composer = new Composer($this->directory);
-
         // Get all installed and required packages.
-        $installed = $composer->getInstalledPackages();
-        $required = $composer->getRequiredPackages();
+        $installed = $this->composer->getInstalledPackages();
+        $required = $this->composer->getRequiredPackages();
 
         $outdated = [];
 
