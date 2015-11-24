@@ -22,7 +22,7 @@ class Ladder
     /**
      * The composer instance.
      *
-     * @var string
+     * @var \Vinkla\Climb\Composer
      */
     protected $composer;
 
