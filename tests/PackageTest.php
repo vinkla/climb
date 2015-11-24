@@ -45,4 +45,18 @@ class PackageTest extends AbstractTestCase
         $package->shouldReceive('getLatestVersion')->andReturn('2.0.0');
         $this->assertEquals('2.0.0', $package->getLatestVersion());
     }
+
+    public function testIsOutdated()
+    {
+        $package = Mockery::mock(Package::class, ['vinkla/climb', '1.0.0', '^1.0.0'])->makePartial();
+        $package->shouldReceive('getLatestVersion')->andReturn('2.0.0');
+        $this->assertTrue($package->isOutdated());
+    }
+
+    public function testIsUpgradeable()
+    {
+        $package = Mockery::mock(Package::class, ['vinkla/climb', '1.5.0', '^1.5.0'])->makePartial();
+        $package->shouldReceive('getLatestVersion')->andReturn('1.7.0');
+        $this->assertTrue($package->isUpgradable());
+    }
 }
