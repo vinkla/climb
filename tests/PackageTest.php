@@ -11,9 +11,8 @@
 
 namespace Vinkla\Tests\Climb;
 
-use Vinkla\Climb\Package;
-
 use Mockery;
+use Vinkla\Climb\Package;
 
 /**
  * This is the package test class.
