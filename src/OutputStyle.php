@@ -57,7 +57,7 @@ class OutputStyle extends SymfonyStyle
      *
      * @return string
      */
-    public static function versionDiff($current, $latest)
+    public function versionDiff($current, $latest)
     {
         $needle = 0;
 
