@@ -130,16 +130,4 @@ class Package
 
         return $this->latestVersion;
     }
-
-    /**
-     * Set the version constraint.
-     *
-     * @param string $constraint
-     *
-     * @return void
-     */
-    public function setConstraint($constraint)
-    {
-        $this->constraint = $constraint;
-    }
 }
