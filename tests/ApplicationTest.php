@@ -23,8 +23,7 @@ class ApplicationTest extends AbstractTestCase
 {
     public function testApplication()
     {
-        $app = new Application();
-
-        $this->assertInstanceOf(Console::class, $app);
+        $application = new Application();
+        $this->assertInstanceOf(Console::class, $application);
     }
 }
