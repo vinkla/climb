@@ -14,6 +14,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class OutputStyle extends SymfonyStyle
 {
+    /**
+     * The climate instance.
+     *
+     * @var \League\CLImate\CLImate
+     */
     protected $climate;
 
     /**
