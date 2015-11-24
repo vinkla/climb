@@ -87,7 +87,8 @@ class UpdateCommand extends Command
         }
 
         if (empty($upgradable)) {
-            $output->note('Nothing to install or update, did you forget the flag --all?');
+            $output->write('<comment>Nothing to install or update, did you forget the flag --all?</comment>');
+            $output->newLine();
 
             return 0;
         }
