@@ -68,7 +68,7 @@ class OutdatedCommand extends Command
         $upgradable = [];
 
         foreach ($packages as $package) {
-            $diff = Version::diff($package->getVersion(), $package->getLatestVersion());
+            $diff = $output->versionDiff($package->getVersion(), $package->getLatestVersion());
 
             if ($package->isUpgradable()) {
                 $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];

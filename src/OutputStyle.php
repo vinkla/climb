@@ -43,4 +43,27 @@ class OutputStyle extends SymfonyStyle
         $this->climate->columns($data);
         $this->newLine();
     }
+
+    /**
+     * Get the diff between the current and latest version.
+     *
+     * @param string $current
+     * @param string $latest
+     *
+     * @return string
+     */
+    public static function versionDiff($current, $latest)
+    {
+        $needle = 0;
+
+        while ($needle < strlen($current) && $needle < strlen($latest)) {
+            if ($current[$needle] !== $latest[$needle]) {
+                break;
+            }
+
+            $needle++;
+        }
+
+        return substr($latest, 0, $needle).'<green>'.substr($latest, $needle).'</green>';
+    }
 }
