@@ -14,7 +14,6 @@ namespace Vinkla\Climb\Commands;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
-use Vinkla\Climb\Version;
 
 /**
  * This is the outdated command class.
