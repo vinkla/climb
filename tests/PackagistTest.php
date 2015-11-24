@@ -24,7 +24,7 @@ class PackagistTest extends AbstractTestCase
     public function testGetLatestVersion()
     {
         $packagist = Mockery::mock(Packagist::class);
-        $packagist->shouldReceive('getLatestVersion')->with('vinkla/climb')->andReturn('1.0.0');
+        $packagist->shouldReceive('getLatestVersion')->with('vinkla/climb')->once()->andReturn('1.0.0');
         $this->assertEquals('1.0.0', $packagist->getLatestVersion('vinkla/climb'));
     }
 }
