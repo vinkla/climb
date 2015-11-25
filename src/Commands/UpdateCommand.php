@@ -67,6 +67,7 @@ class UpdateCommand extends Command
 
         if (!$packages) {
             $output->writeln('All dependencies match the latest package versions <green>:)</green>');
+            $output->newLine();
 
             return 0;
         }
