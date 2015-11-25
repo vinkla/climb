@@ -19,7 +19,7 @@ use Vinkla\Climb\Packagist;
 /**
  * This is the Packagist test class.
  *
- * @author Mikael Mattsson <hmikael@weblyan.se>
+ * @author Mikael Mattsson <mikael@weblyan.se>
  */
 class PackagistTest extends AbstractTestCase
 {
