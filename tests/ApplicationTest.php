@@ -11,6 +11,7 @@
 
 namespace Vinkla\Tests\Climb;
 
+use ReflectionClass;
 use Symfony\Component\Console\Application as Console;
 use Vinkla\Climb\Application;
 
@@ -25,5 +26,14 @@ class ApplicationTest extends AbstractTestCase
     {
         $application = new Application();
         $this->assertInstanceOf(Console::class, $application);
+    }
+
+    public function testDefaultCommand()
+    {
+        $application = new Application();
+        $rc = new ReflectionClass(Console::class);
+        $property = $rc->getProperty('defaultCommand');
+        $property->setAccessible(true);
+        $this->assertSame('outdated', $property->getValue($application));
     }
 }
