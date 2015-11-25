@@ -12,19 +12,27 @@
 namespace Vinkla\Tests\Climb;
 
 use Mockery;
+use Packagist\Api\Result\Package;
+use Packagist\Api\Result\Package\Version;
 use Vinkla\Climb\Packagist;
 
 /**
  * This is the Packagist test class.
  *
- * @author Vincent Klaiber <hello@vinkla.com>
+ * @author Mikael Mattsson <hmikael@weblyan.se>
  */
 class PackagistTest extends AbstractTestCase
 {
     public function testGetLatestVersion()
     {
-        $packagist = Mockery::mock(Packagist::class);
-        $packagist->shouldReceive('getLatestVersion')->with('vinkla/climb')->once()->andReturn('1.0.0');
+        $v1 = new Version();
+        $v1->fromArray(['version' => '1.0.0']);
+        $v2 = new Version();
+        $v2->fromArray(['version' => '0.3.0']);
+        $package = new Package();
+        $package->fromArray(['name' => 'vinkla/climb', 'versions' => ['1.0.0' => $v1, '0.3.0' => $v2]]);
+        $packagist = Mockery::mock(Packagist::class)->makePartial();
+        $packagist->shouldReceive('get')->with('vinkla/climb')->andReturn($package);
         $this->assertEquals('1.0.0', $packagist->getLatestVersion('vinkla/climb'));
     }
 }
