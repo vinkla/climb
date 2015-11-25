@@ -25,20 +25,13 @@ use Vinkla\Climb\Commands\UpdateCommand;
 class Application extends Console
 {
     /**
-     * The version number.
-     *
-     * @var string
-     */
-    const VERSION = '0.7.0';
-
-    /**
      * Create a new application instance.
      *
      * @return void
      */
     public function __construct()
     {
-        parent::__construct('Climb', self::VERSION);
+        parent::__construct('Climb', '0.7.0');
 
         $this->add(new GlobalOutdatedCommand());
         $this->add(new GlobalUpdateCommand());
