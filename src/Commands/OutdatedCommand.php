@@ -59,6 +59,7 @@ class OutdatedCommand extends Command
 
         if (!count($packages)) {
             $output->writeln('All dependencies match the latest package versions <info>:)</info>');
+            $output->newLine();
 
             return 0;
         }
@@ -81,7 +82,7 @@ class OutdatedCommand extends Command
         }
 
         if ($upgradable) {
-            $output->write('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
+            $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
             $output->newLine();
             $output->columns($upgradable);
         }
