@@ -29,7 +29,7 @@ class VersionTest extends AbstractTestCase
         ];
 
         foreach ($versions as $version => $expected) {
-            $this->assertEquals($expected, Version::normalize($version));
+            $this->assertSame($expected, Version::normalize($version));
         }
     }
 
@@ -42,6 +42,6 @@ class VersionTest extends AbstractTestCase
             '3.2.0-dev',
         ];
 
-        $this->assertEquals('3.1.5', Version::latest($versions));
+        $this->assertSame('3.1.5', Version::latest($versions));
     }
 }

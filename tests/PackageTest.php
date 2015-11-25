@@ -25,19 +25,19 @@ class PackageTest extends AbstractTestCase
     public function testName()
     {
         $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
-        $this->assertEquals('vinkla/climb', $package->getName());
+        $this->assertSame('vinkla/climb', $package->getName());
     }
 
     public function testVersion()
     {
         $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
-        $this->assertEquals('1.0.0', $package->getVersion());
+        $this->assertSame('1.0.0', $package->getVersion());
     }
 
     public function testPrettyVersion()
     {
         $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
-        $this->assertEquals('^1.0.0', $package->getPrettyVersion());
+        $this->assertSame('^1.0.0', $package->getPrettyVersion());
     }
 
     public function testLatestVersion()
@@ -46,7 +46,7 @@ class PackageTest extends AbstractTestCase
         $packagist->shouldReceive('getLatestVersion')->once()->andReturn('2.0.0');
         $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
         $package->setPackagist($packagist);
-        $this->assertEquals('2.0.0', $package->getLatestVersion());
+        $this->assertSame('2.0.0', $package->getLatestVersion());
     }
 
     public function testIsOutdated()

@@ -28,6 +28,6 @@ class ComposerTest extends AbstractTestCase
         $method = $rc->getMethod('getFileContents');
         $method->setAccessible(true);
         $json = $method->invokeArgs($composer, ['composer.json']);
-        $this->assertEquals('vinkla/climb', $json['name']);
+        $this->assertSame('vinkla/climb', $json['name']);
     }
 }
