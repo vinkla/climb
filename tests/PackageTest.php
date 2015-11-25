@@ -13,6 +13,7 @@ namespace Vinkla\Tests\Climb;
 
 use Mockery;
 use Vinkla\Climb\Package;
+use Vinkla\Climb\Packagist;
 
 /**
  * This is the package test class.
@@ -41,8 +42,10 @@ class PackageTest extends AbstractTestCase
 
     public function testLatestVersion()
     {
-        $package = Mockery::mock(Package::class);
-        $package->shouldReceive('getLatestVersion')->once()->andReturn('2.0.0');
+        $packagist = Mockery::mock(Packagist::class);
+        $packagist->shouldReceive('getLatestVersion')->once()->andReturn('2.0.0');
+        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
+        $package->setPackagist($packagist);
         $this->assertEquals('2.0.0', $package->getLatestVersion());
     }
 

@@ -130,4 +130,14 @@ class Package
 
         return $this->latestVersion;
     }
+
+    /**
+     * Set the packagist instance.
+     *
+     * @param $packagist
+     */
+    public function setPackagist($packagist)
+    {
+        $this->packagist = $packagist;
+    }
 }
