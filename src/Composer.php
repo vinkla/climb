@@ -2,6 +2,7 @@
 
 namespace Vinkla\Climb;
 
+use InvalidArgumentException;
 use LogicException;
 
 /**
@@ -105,8 +106,12 @@ class Composer
      */
     protected function getFileContents($file)
     {
-        $path = $this->directory.'/'.$file;
+        $filePath = $this->directory.'/'.$file;
 
-        return json_decode(file_get_contents($path), true);
+        if (!file_exists($filePath)) {
+            throw new InvalidArgumentException("The file [$filePath] does not exist.");
+        }
+
+        return json_decode(file_get_contents($filePath), true);
     }
 }
