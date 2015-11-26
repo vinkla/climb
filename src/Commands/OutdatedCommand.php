@@ -33,6 +33,7 @@ class OutdatedCommand extends Command
     {
         $this->setName('outdated');
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
+        $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
     }
 
@@ -46,7 +47,9 @@ class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $ladder = new Ladder($input->getOption('global') ? getenv('HOME').'/.composer' : null);
+        $composerPath = $this->getComposerPathFromInput($input);
+
+        $ladder = new Ladder($composerPath);
 
         $packages = $ladder->getOutdatedPackages();
 

@@ -39,4 +39,24 @@ class Command extends BaseCommand
 
         parent::run($input, $output);
     }
+
+    /**
+     * Get composer path based on user input.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return null|string
+     */
+    protected function getComposerPathFromInput(InputInterface $input)
+    {
+        if ($input->getOption('directory')) {
+            return $input->getOption('directory');
+        }
+
+        if ($input->getOption('global')) {
+            return getenv('HOME').'/.composer';
+        }
+
+        return null;
+    }
 }

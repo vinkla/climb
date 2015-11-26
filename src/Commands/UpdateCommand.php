@@ -42,6 +42,7 @@ class UpdateCommand extends Command
         $this->setName('update');
         $this->setDescription('Update composer.json dependencies versions');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Run update on breaking versions');
+        $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
     }
 
@@ -55,7 +56,9 @@ class UpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $ladder = new Ladder($input->getOption('global') ? getenv('HOME').'/.composer' : null);
+        $composerPath = $this->getComposerPathFromInput($input);
+
+        $ladder = new Ladder($composerPath);
 
         $packages = $ladder->getOutdatedPackages();
 
@@ -92,11 +95,11 @@ class UpdateCommand extends Command
             $this->command .= " {$package}=^$version";
         }
 
-        $output->newLine();
-
         $command = $input->getOption('global') ? 'composer global require' : 'composer require';
 
-        $process = new Process($command, null, array_merge($_SERVER, $_ENV), null, null);
+        $process = new Process($command, $composerPath, array_merge($_SERVER, $_ENV), null, null);
+
+        $output->newLine();
 
         $process->run(function ($type, $line) use ($output) {
             $output->write($line);
