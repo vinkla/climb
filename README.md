@@ -21,7 +21,7 @@ vinkla/hashids                  1.1.0      →     2.2.0
 
 ## Installation
 
-You can install Climb with either [Homebrew](http://brew.sh/) (recommended) or globally with [Composer](https://getcomposer.org/).
+You can install Climb with either [Homebrew](http://brew.sh/) (recommended), manually or globally with [Composer](https://getcomposer.org/).
 
 ### Homebrew
 
@@ -29,6 +29,24 @@ Run this command to install Climb with Homebrew.
 
 ```bash
 brew install homebrew/php/climb
+```
+
+### Manually
+
+You can run the commands below to easily access `climb` from anywhere on your system.
+
+```bash
+wget https://github.com/vinkla/climb/releases/download/0.6.1/climb.phar
+chmod +x climb
+sudo mv climb.phar /usr/local/bin/climb
+climb --version
+```
+
+You may also use the downloaded `PHAR` file directly:
+
+```bash
+wget https://github.com/vinkla/climb/releases/download/0.6.1/climb.phar
+php climb.phar --version
 ```
 
 ### Composer
@@ -45,30 +63,21 @@ export PATH=${PATH}:${HOME}/.composer/vendor/bin;
 
 ## Usage
 
+All Climb commands can does have an optional flag called `--global` or `-g` to run on your globally installed pacakges.
+
+#### Outdated
+
 Find newer versions of dependencies than what your `composer.json` allows.
 ```bash
 climb
+# or
+climb outdated
 ```
-
-Find newer versions of dependencies than what your global `composer.json` allows.
-```bash
-climb global
-```
+#### Update
 
 Update `composer.json` dependencies versions.
 ```bash
 climb update
-
-# Update breaking version
-climb update --all
-```
-
-Update global `composer.json` dependencies versions.
-```bash
-climb global-update
-
-# Update breaking version
-climb global-update --all
 ```
 
 ## License
