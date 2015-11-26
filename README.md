@@ -23,7 +23,7 @@ vinkla/hashids                  1.1.0      →     2.2.0
 
 You can install Climb with either [Homebrew](http://brew.sh/) (recommended), manually or with [Composer](https://getcomposer.org/).
 
-### Homebrew
+#### Homebrew
 
 Run this command to install Climb with Homebrew.
 
@@ -31,7 +31,7 @@ Run this command to install Climb with Homebrew.
 brew install homebrew/php/climb
 ```
 
-### Manually
+#### Manually
 
 You can run the commands below to easily access `climb` from anywhere on your system.
 
@@ -49,7 +49,7 @@ wget https://github.com/vinkla/climb/releases/download/0.6.1/climb.phar
 php climb.phar --version
 ```
 
-### Composer
+#### Composer
 
 Run this command to install Climb globally with Composer.
 ```bash
