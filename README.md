@@ -21,7 +21,7 @@ vinkla/hashids                  1.1.0      →     2.2.0
 
 ## Installation
 
-You can install Climb with either [Homebrew](http://brew.sh/) (recommended), manually or globally with [Composer](https://getcomposer.org/).
+You can install Climb with either [Homebrew](http://brew.sh/) (recommended), manually or with [Composer](https://getcomposer.org/).
 
 ### Homebrew
 
