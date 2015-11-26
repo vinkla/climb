@@ -41,8 +41,6 @@ class Ladder
     /**
      * Get outdated packages with their current and latest version.
      *
-     * @throws \Vinkla\Climb\ClimbException
-     *
      * @return array
      */
     public function getOutdatedPackages()
