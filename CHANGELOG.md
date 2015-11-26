@@ -5,6 +5,7 @@
 - Remove global commands in favour of flags
 - Major code cleanup
 - New and better test suit 
+- Add directory option
 
 ## 0.6.1 (released 2015-11-20)
 
