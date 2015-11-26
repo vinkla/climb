@@ -49,6 +49,13 @@ class Package
     protected $prettyVersion;
 
     /**
+     * The Packagist instance.
+     * 
+     * @var \Vinkla\Climb\Packagist
+     */
+    protected $packagist;
+
+    /**
      * Create a new package instance.
      *
      * @param string $name
