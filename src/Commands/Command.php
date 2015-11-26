@@ -57,6 +57,6 @@ class Command extends BaseCommand
             return getenv('HOME').'/.composer';
         }
 
-        return null;
+        return;
     }
 }
