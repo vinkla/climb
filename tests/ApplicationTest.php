@@ -26,6 +26,7 @@ class ApplicationTest extends AbstractTestCase
     {
         $application = new Application();
         $this->assertInstanceOf(Console::class, $application);
+        $this->assertSame('Climb', $application->getName());
     }
 
     public function testDefaultCommand()
