@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.7.0 (upcoming)
+
+- Remove global commands in favour of flags
+- Major code cleanup
+- New and better test suit 
+
 ## 0.6.1 (released 2015-11-20)
 
 - Exclude unstable versions
