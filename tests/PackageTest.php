@@ -30,14 +30,14 @@ class PackageTest extends AbstractTestCase
 
     public function testVersion()
     {
-        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
-        $this->assertSame('1.0.0', $package->getVersion());
+        $package = new Package('vinkla/climb', '2.0.0', '^2.0.0');
+        $this->assertSame('2.0.0', $package->getVersion());
     }
 
     public function testPrettyVersion()
     {
-        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
-        $this->assertSame('^1.0.0', $package->getPrettyVersion());
+        $package = new Package('vinkla/climb', '3.0.0', '^3.0.0');
+        $this->assertSame('^3.0.0', $package->getPrettyVersion());
     }
 
     public function testLatestVersion()
