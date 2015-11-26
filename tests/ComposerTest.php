@@ -21,13 +21,26 @@ use Vinkla\Climb\Composer;
  */
 class ComposerTest extends AbstractTestCase
 {
-    public function testGetFileContents()
+    protected function getFileContents($file)
     {
         $composer = new Composer(getcwd());
         $rc = new ReflectionClass(Composer::class);
         $method = $rc->getMethod('getFileContents');
         $method->setAccessible(true);
-        $json = $method->invokeArgs($composer, ['composer.json']);
+        return $method->invokeArgs($composer, [$file]);
+    }
+
+    public function testGetFileContents()
+    {
+        $json = $this->getFileContents('composer.json');
         $this->assertSame('vinkla/climb', $json['name']);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFileNotFoundException()
+    {
+        $this->getFileContents('marty.mcfly');
     }
 }
