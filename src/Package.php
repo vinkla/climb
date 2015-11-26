@@ -50,7 +50,7 @@ class Package
 
     /**
      * The Packagist instance.
-     * 
+     *
      * @var \Vinkla\Climb\Packagist
      */
     protected $packagist;
