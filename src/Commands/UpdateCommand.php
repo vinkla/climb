@@ -26,13 +26,6 @@ use Vinkla\Climb\Ladder;
 class UpdateCommand extends Command
 {
     /**
-     * The Ladder instance.
-     *
-     * @var \Vinkla\Climb\Ladder
-     */
-    protected $ladder;
-
-    /**
      * The composer command to run.
      *
      * @return string
@@ -49,8 +42,7 @@ class UpdateCommand extends Command
         $this->setName('update');
         $this->setDescription('Update composer.json dependencies versions');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Run update on breaking versions');
-
-        $this->ladder = new Ladder();
+        $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
     }
 
     /**
@@ -63,7 +55,9 @@ class UpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $packages = $this->ladder->getOutdatedPackages();
+        $ladder = new Ladder($input->getOption('global') ? getenv('HOME').'/.composer' : null);
+
+        $packages = $ladder->getOutdatedPackages();
 
         if (!$packages) {
             $output->writeln('All dependencies match the latest package versions <green>:)</green>');
@@ -100,7 +94,9 @@ class UpdateCommand extends Command
 
         $output->newLine();
 
-        $process = new Process($this->command, null, array_merge($_SERVER, $_ENV), null, null);
+        $command = $input->getOption('global') ? 'composer global require' : 'composer require';
+
+        $process = new Process($command, null, array_merge($_SERVER, $_ENV), null, null);
 
         $process->run(function ($type, $line) use ($output) {
             $output->write($line);

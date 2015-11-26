@@ -12,8 +12,6 @@
 namespace Vinkla\Climb;
 
 use Symfony\Component\Console\Application as Console;
-use Vinkla\Climb\Commands\GlobalOutdatedCommand;
-use Vinkla\Climb\Commands\GlobalUpdateCommand;
 use Vinkla\Climb\Commands\OutdatedCommand;
 use Vinkla\Climb\Commands\UpdateCommand;
 
@@ -33,8 +31,6 @@ class Application extends Console
     {
         parent::__construct('Climb', '0.7.0');
 
-        $this->add(new GlobalOutdatedCommand());
-        $this->add(new GlobalUpdateCommand());
         $this->add(new OutdatedCommand());
         $this->add(new UpdateCommand());
 
