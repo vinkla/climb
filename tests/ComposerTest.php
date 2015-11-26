@@ -27,13 +27,14 @@ class ComposerTest extends AbstractTestCase
         $rc = new ReflectionClass(Composer::class);
         $method = $rc->getMethod('getFileContents');
         $method->setAccessible(true);
+
         return $method->invokeArgs($composer, [$file]);
     }
 
     public function testGetFileContents()
     {
-        $json = $this->getFileContents('composer.json');
-        $this->assertSame('vinkla/climb', $json['name']);
+        $data = $this->getFileContents('composer.json');
+        $this->assertSame('vinkla/climb', $data['name']);
     }
 
     /**
@@ -42,5 +43,37 @@ class ComposerTest extends AbstractTestCase
     public function testFileNotFoundException()
     {
         $this->getFileContents('marty.mcfly');
+    }
+
+    public function testGetInstalledPackages()
+    {
+        $composer = new Composer(getcwd());
+        $packages = $composer->getInstalledPackages();
+        $this->assertArrayHasKey('composer/semver', $packages);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testGetInstalledPackagesException()
+    {
+        $composer = new Composer(__DIR__);
+        $composer->getInstalledPackages();
+    }
+
+    public function testGetRequiredPackages()
+    {
+        $composer = new Composer(getcwd());
+        $packages = $composer->getRequiredPackages();
+        $this->assertArrayHasKey('composer/semver', $packages);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testGetRequiredPackagesException()
+    {
+        $composer = new Composer(__DIR__);
+        $composer->getRequiredPackages();
     }
 }
