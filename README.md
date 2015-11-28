@@ -17,8 +17,6 @@ vinkla/hashids                  1.1.0      →     2.2.0
 [![Latest Version](https://img.shields.io/github/release/vinkla/climb.svg?style=flat)](https://github.com/vinkla/climb/releases)
 [![License](https://img.shields.io/packagist/l/vinkla/climb.svg?style=flat)](https://packagist.org/packages/vinkla/climb)
 
-> **Note:** This tool is still in early stages of development and may change in the future. The tool is a proof of concept. There are some bugs that we're aware of and we will try to fix them asap. If you find any please report! We also appreciate pull requests, a lot!
-
 ## Installation
 
 You can install Climb with either [Homebrew](http://brew.sh/) (recommended), manually or with [Composer](https://getcomposer.org/).
