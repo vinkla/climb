@@ -35,6 +35,7 @@ class OutdatedCommand extends Command
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
         $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
+        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Output format', 'console');
     }
 
     /**
@@ -47,43 +48,40 @@ class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $formatClass = '\\Vinkla\\Climb\\Formatter\\'.ucfirst($input->getOption('format'));
+        if (!class_exists($formatClass)) {
+            $output->error(sprintf('Output format "%s" is not supported', $input->getOption('format')));
+
+            return 1;
+        }
+
         $composerPath = $this->getComposerPathFromInput($input);
 
         $ladder = new Ladder($composerPath);
 
         $packages = $ladder->getOutdatedPackages();
 
-        $output->newLine();
-
-        if (!count($packages)) {
-            $output->writeln('All dependencies match the latest package versions <info>:)</info>');
-            $output->newLine();
-
-            return 0;
-        }
-
         $outdated = [];
         $upgradable = [];
 
         foreach ($packages as $package) {
-            $diff = $output->versionDiff($package->getVersion(), $package->getLatestVersion());
-
             if ($package->isUpgradable()) {
-                $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
+                $upgradable[] = [
+                    $package->getName(),
+                    $package->getVersion(),
+                    $package->getLatestVersion(),
+                ];
             } else {
-                $outdated[] = [$package->getName(), $package->getVersion(), '→', $diff];
+                $outdated[] = [
+                    $package->getName(),
+                    $package->getVersion(),
+                    $package->getLatestVersion(),
+                ];
             }
         }
 
-        if ($outdated) {
-            $output->columns($outdated);
-        }
-
-        if ($upgradable) {
-            $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
-            $output->newLine();
-            $output->columns($upgradable);
-        }
+        $outputHandler = new $formatClass();
+        $outputHandler->render($output, $outdated, $upgradable);
 
         return 0;
     }
