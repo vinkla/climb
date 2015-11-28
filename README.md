@@ -2,7 +2,7 @@
 
 ![climb](https://cloud.githubusercontent.com/assets/499192/11169131/34667b2c-8baf-11e5-99d7-88c2e4cb0330.png)
 
-A Composer version manager tool made with inspiration from [this awesome NPM package](https://www.npmjs.com/package/npm-check-updates). Find newer versions of dependencies than what your composer.json allows.
+A Composer version manager tool made with inspiration from [this NPM package](https://www.npmjs.com/package/npm-check-updates). Find newer versions of dependencies than what your composer.json allows.
 
 ```bash
 alt-three/logger                1.0.2      →     1.1.0
