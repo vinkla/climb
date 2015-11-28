@@ -23,7 +23,7 @@ class ComposerTest extends AbstractTestCase
 {
     protected function getFileContents($file)
     {
-        $composer = new Composer(getcwd());
+        $composer = new Composer(__DIR__.'/stubs');
         $rc = new ReflectionClass(Composer::class);
         $method = $rc->getMethod('getFileContents');
         $method->setAccessible(true);
@@ -47,7 +47,7 @@ class ComposerTest extends AbstractTestCase
 
     public function testGetInstalledPackages()
     {
-        $composer = new Composer(getcwd());
+        $composer = new Composer(__DIR__.'/stubs');
         $packages = $composer->getInstalledPackages();
         $this->assertArrayHasKey('composer/semver', $packages);
     }
@@ -63,7 +63,7 @@ class ComposerTest extends AbstractTestCase
 
     public function testGetRequiredPackages()
     {
-        $composer = new Composer(getcwd());
+        $composer = new Composer(__DIR__.'/stubs');
         $packages = $composer->getRequiredPackages();
         $this->assertArrayHasKey('composer/semver', $packages);
     }
