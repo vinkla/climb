@@ -2,7 +2,7 @@
 
 ## 0.7.0 (released 2015-11-28)
 
-- Remove global commands in favour of flags
+- Remove global commands in favor of flags
 - Major code cleanup
 - New and better test suit
 - Add directory option
