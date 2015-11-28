@@ -63,7 +63,7 @@ export PATH=${PATH}:${HOME}/.composer/vendor/bin;
 
 ## Usage
 
-All Climb commands can does have an optional flag called `--global` or `-g` to run on your globally installed pacakges.
+All Climb commands can does have an optional flag called `--global` or `-g` to run on your globally installed packages.
 
 #### Outdated
 
@@ -73,6 +73,9 @@ climb
 # or
 climb outdated
 ```
+
+> In order to send flags to this command you must write it out as `climb outdated`. Running for example `climb --global` wont work. Instead run `climb outdated --global` to get the correct feedback.
+
 #### Update
 
 Update `composer.json` dependencies versions.
