@@ -35,6 +35,9 @@ class OutdatedCommand extends Command
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
         $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
+        $this->addOption('no-outdated', null, InputOption::VALUE_NONE, 'Do not check outdated dependencies');
+        $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Do not check upgradable dependencies');
+        $this->addOption('fail', null, InputOption::VALUE_NONE, 'Fail when outdated and/or upgradable');
     }
 
     /**
@@ -69,8 +72,10 @@ class OutdatedCommand extends Command
             $diff = $output->versionDiff($package->getVersion(), $package->getLatestVersion());
 
             if ($package->isUpgradable()) {
-                $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
-            } else {
+                if (!$input->getOption('no-upgradable')) {
+                    $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
+                }
+            } elseif (!$input->getOption('no-outdated')) {
                 $outdated[] = [$package->getName(), $package->getVersion(), '→', $diff];
             }
         }
@@ -83,6 +88,10 @@ class OutdatedCommand extends Command
             $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
             $output->newLine();
             $output->columns($upgradable);
+        }
+
+        if ($input->getOption('fail') && ($outdated || $upgradable)) {
+            return 1;
         }
 
         return 0;
