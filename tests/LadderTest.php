@@ -22,7 +22,7 @@ class LadderTest extends AbstractTestCase
 {
     public function testGetOutdatedPackages()
     {
-        $ladder = new Ladder();
+        $ladder = new Ladder(__DIR__.'/stubs');
         $packages = $ladder->getOutdatedPackages();
         $this->assertTrue(is_array($packages));
     }
