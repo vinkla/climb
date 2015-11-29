@@ -23,7 +23,7 @@ class Console implements Format
     /**
      * {@inheritdoc}
      */
-    public function render(OutputInterface $output, array $outdated, array $upgradable)
+    public function render(OutputInterface $output, array $outdated = [], array $upgradable = [])
     {
         $output->newLine();
 
