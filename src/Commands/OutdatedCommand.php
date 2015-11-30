@@ -37,7 +37,6 @@ class OutdatedCommand extends Command
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
         $this->addOption('no-outdated', null, InputOption::VALUE_NONE, 'Do not check outdated dependencies');
         $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Do not check upgradable dependencies');
-        $this->addOption('fail', null, InputOption::VALUE_NONE, 'Fail when outdated and/or upgradable');
     }
 
     /**
@@ -90,7 +89,7 @@ class OutdatedCommand extends Command
             $output->columns($upgradable);
         }
 
-        if ($input->getOption('fail') && ($outdated || $upgradable)) {
+        if ($outdated || $upgradable) {
             return 1;
         }
 
