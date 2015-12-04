@@ -27,18 +27,18 @@ class Console implements Format
     {
         $output->newLine();
 
-        if (!$outdated && !$upgradable) {
+        if (!count($outdated) && !count($upgradable)) {
             $output->writeln('All dependencies match the latest package versions <info>:)</info>');
             $output->newLine();
 
             return;
         }
 
-        if ($outdated) {
+        if (count($outdated)) {
             $output->columns($this->formatPackages($outdated, $output));
         }
 
-        if ($upgradable) {
+        if (count($upgradable)) {
             $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
             $output->newLine();
             $output->columns($this->formatPackages($upgradable, $output));

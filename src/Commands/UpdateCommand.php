@@ -66,7 +66,7 @@ class UpdateCommand extends Command
             $output->writeln('All dependencies match the latest package versions <green>:)</green>');
             $output->newLine();
 
-            return 0;
+            return 1;
         }
 
         $outdated = [];
@@ -88,7 +88,7 @@ class UpdateCommand extends Command
             $output->write('<comment>Nothing to install or update, did you forget the flag --all?</comment>');
             $output->newLine();
 
-            return 0;
+            return 1;
         }
 
         foreach ($upgradable as $package => $version) {

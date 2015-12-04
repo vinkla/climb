@@ -35,6 +35,8 @@ class OutdatedCommand extends Command
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
         $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
+        $this->addOption('no-outdated', null, InputOption::VALUE_NONE, 'Do not check outdated dependencies');
+        $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Do not check upgradable dependencies');
         $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Output format', 'console');
     }
 
@@ -55,9 +57,7 @@ class OutdatedCommand extends Command
             return 1;
         }
 
-        $composerPath = $this->getComposerPathFromInput($input);
-
-        $ladder = new Ladder($composerPath);
+        $ladder = new Ladder($this->getComposerPathFromInput($input));
 
         $packages = $ladder->getOutdatedPackages();
 
@@ -66,12 +66,14 @@ class OutdatedCommand extends Command
 
         foreach ($packages as $package) {
             if ($package->isUpgradable()) {
-                $upgradable[] = [
-                    $package->getName(),
-                    $package->getVersion(),
-                    $package->getLatestVersion(),
-                ];
-            } else {
+                if (!$input->getOption('no-upgradable')) {
+                    $upgradable[] = [
+                        $package->getName(),
+                        $package->getVersion(),
+                        $package->getLatestVersion(),
+                    ];
+                }
+            } elseif (!$input->getOption('no-outdated')) {
                 $outdated[] = [
                     $package->getName(),
                     $package->getVersion(),
@@ -82,6 +84,10 @@ class OutdatedCommand extends Command
 
         $outputHandler = new $formatClass();
         $outputHandler->render($output, $outdated, $upgradable);
+
+        if (count($outdated) || count($upgradable)) {
+            return 1;
+        }
 
         return 0;
     }

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.8.0 (upcoming)
+
+- Add Symfony 3.0 support
+- Add `--outdated` and `--upgradable` flags
+- Add none-zero status codes for CI
+
 ## 0.7.0 (released 2015-11-28)
 
 - Remove global commands in favor of flags
