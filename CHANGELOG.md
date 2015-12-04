@@ -3,6 +3,7 @@
 ## 0.8.0 (upcoming)
 
 - Add Symfony 3.0 support
+- Add `--no-outdated` and `--no-upgradable` flags
 
 ## 0.7.0 (released 2015-11-28)
 
