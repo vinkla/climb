@@ -57,11 +57,13 @@ class OutdatedCommand extends Command
 
         $output->newLine();
 
+        $statusCode = 0;
+
         if (!count($packages)) {
             $output->writeln('All dependencies match the latest package versions <info>:)</info>');
             $output->newLine();
 
-            return 0;
+            return $statusCode;
         }
 
         $outdated = [];
@@ -71,28 +73,24 @@ class OutdatedCommand extends Command
             $diff = $output->versionDiff($package->getVersion(), $package->getLatestVersion());
 
             if ($package->isUpgradable()) {
-                if (!$input->getOption('no-upgradable')) {
-                    $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
-                }
-            } elseif (!$input->getOption('no-outdated')) {
+                $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
+            } else {
                 $outdated[] = [$package->getName(), $package->getVersion(), '→', $diff];
             }
         }
 
-        if ($outdated) {
+        if ($outdated && !$input->getOption('no-outdated')) {
             $output->columns($outdated);
+            $statusCode = 1;
         }
 
-        if ($upgradable) {
+        if ($upgradable && !$input->getOption('no-upgradable')) {
             $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
             $output->newLine();
             $output->columns($upgradable);
+            $statusCode = 1;
         }
 
-        if ($outdated || $upgradable) {
-            return 1;
-        }
-
-        return 0;
+        return $statusCode;
     }
 }
