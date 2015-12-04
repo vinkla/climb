@@ -35,8 +35,8 @@ class OutdatedCommand extends Command
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
         $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
-        $this->addOption('no-outdated', null, InputOption::VALUE_NONE, 'Do not check outdated dependencies');
-        $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Do not check upgradable dependencies');
+        $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Only check outdated dependencies');
+        $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Only check upgradable dependencies');
         $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Output format', 'console');
     }
 
@@ -66,14 +66,14 @@ class OutdatedCommand extends Command
 
         foreach ($packages as $package) {
             if ($package->isUpgradable()) {
-                if (!$input->getOption('no-upgradable')) {
+                if (!$input->getOption('outdated')) {
                     $upgradable[] = [
                         $package->getName(),
                         $package->getVersion(),
                         $package->getLatestVersion(),
                     ];
                 }
-            } elseif (!$input->getOption('no-outdated')) {
+            } elseif (!$input->getOption('upgradable')) {
                 $outdated[] = [
                     $package->getName(),
                     $package->getVersion(),
