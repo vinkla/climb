@@ -35,8 +35,8 @@ class OutdatedCommand extends Command
         $this->setDescription('Find newer versions of dependencies than what your composer.json allows');
         $this->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Composer files directory');
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
-        $this->addOption('no-outdated', null, InputOption::VALUE_NONE, 'Do not check outdated dependencies');
-        $this->addOption('no-upgradable', null, InputOption::VALUE_NONE, 'Do not check upgradable dependencies');
+        $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Only check outdated dependencies');
+        $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Only check upgradable dependencies');
     }
 
     /**
@@ -79,12 +79,12 @@ class OutdatedCommand extends Command
             }
         }
 
-        if ($outdated && !$input->getOption('no-outdated')) {
+        if ($outdated && !$input->getOption('upgradable')) {
             $output->columns($outdated);
             $statusCode = 1;
         }
 
-        if ($upgradable && !$input->getOption('no-upgradable')) {
+        if ($upgradable && !$input->getOption('outdated')) {
             $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
             $output->newLine();
             $output->columns($upgradable);
