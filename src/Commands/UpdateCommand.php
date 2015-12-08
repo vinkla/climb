@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Vinkla\Climb\Ladder;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * This is the update command class.
@@ -23,7 +24,7 @@ use Vinkla\Climb\Ladder;
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Joseph Cohen <joe@alt-three.com>
  */
-class UpdateCommand extends Command
+final class UpdateCommand extends Command
 {
     /**
      * The composer command to run.
@@ -56,6 +57,8 @@ class UpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new OutputStyle($input, $output);
+
         $composerPath = $this->getComposerPathFromInput($input);
 
         $ladder = new Ladder($composerPath);
@@ -63,8 +66,8 @@ class UpdateCommand extends Command
         $packages = $ladder->getOutdatedPackages();
 
         if (!$packages) {
-            $output->writeln('All dependencies match the latest package versions <green>:)</green>');
-            $output->newLine();
+            $io->writeln('All dependencies match the latest package versions <green>:)</green>');
+            $io->newLine();
 
             return 1;
         }
@@ -85,8 +88,8 @@ class UpdateCommand extends Command
         }
 
         if (empty($upgradable)) {
-            $output->write('<comment>Nothing to install or update, did you forget the flag --all?</comment>');
-            $output->newLine();
+            $io->write('<comment>Nothing to install or update, did you forget the flag --all?</comment>');
+            $io->newLine();
 
             return 1;
         }
@@ -99,10 +102,10 @@ class UpdateCommand extends Command
 
         $process = new Process($command, $composerPath, array_merge($_SERVER, $_ENV), null, null);
 
-        $output->newLine();
+        $io->newLine();
 
-        $process->run(function ($type, $line) use ($output) {
-            $output->write($line);
+        $process->run(function ($type, $line) use ($io) {
+            $io->write($line);
         });
 
         return 0;

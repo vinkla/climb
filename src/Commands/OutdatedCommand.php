@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * This is the outdated command class.
@@ -22,7 +23,7 @@ use Vinkla\Climb\Ladder;
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
  */
-class OutdatedCommand extends Command
+final class OutdatedCommand extends Command
 {
     /**
      * Configure the outdated command.
@@ -49,19 +50,21 @@ class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new OutputStyle($input, $output);
+
         $composerPath = $this->getComposerPathFromInput($input);
 
         $ladder = new Ladder($composerPath);
 
         $packages = $ladder->getOutdatedPackages();
 
-        $output->newLine();
+        $io->newLine();
 
         $statusCode = 0;
 
         if (!count($packages)) {
-            $output->writeln('All dependencies match the latest package versions <info>:)</info>');
-            $output->newLine();
+            $io->writeln('All dependencies match the latest package versions <info>:)</info>');
+            $io->newLine();
 
             return $statusCode;
         }
@@ -70,7 +73,7 @@ class OutdatedCommand extends Command
         $upgradable = [];
 
         foreach ($packages as $package) {
-            $diff = $output->versionDiff($package->getVersion(), $package->getLatestVersion());
+            $diff = $io->versionDiff($package->getVersion(), $package->getLatestVersion());
 
             if ($package->isUpgradable()) {
                 $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
@@ -80,15 +83,19 @@ class OutdatedCommand extends Command
         }
 
         if ($outdated && !$input->getOption('upgradable')) {
-            $output->columns($outdated);
             $statusCode = 1;
+
+            $io->columns($outdated);
+            $io->newLine();
         }
 
         if ($upgradable && !$input->getOption('outdated')) {
-            $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
-            $output->newLine();
-            $output->columns($upgradable);
             $statusCode = 1;
+
+            $io->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
+            $io->newLine();
+            $io->columns($upgradable);
+            $io->newLine();
         }
 
         return $statusCode;
