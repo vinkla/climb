@@ -35,12 +35,7 @@ class VersionTest extends AbstractTestCase
 
     public function testLatest()
     {
-        $versions = [
-            'v2.0.1',
-            '3.1',
-            '3.1.5',
-            '3.2.0-dev',
-        ];
+        $versions = ['v2.0.1', '3.1', '3.1.5', '3.2.0-dev'];
 
         $this->assertSame('3.1.5', Version::latest($versions));
     }
