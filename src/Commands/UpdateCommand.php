@@ -65,7 +65,7 @@ final class UpdateCommand extends Command
 
         $packages = $ladder->getOutdatedPackages();
 
-        if (!$packages) {
+        if (!count($packages)) {
             $io->writeln('All dependencies match the latest package versions <green>:)</green>');
             $io->newLine();
 

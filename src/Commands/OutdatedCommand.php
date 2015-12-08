@@ -82,14 +82,14 @@ final class OutdatedCommand extends Command
             }
         }
 
-        if ($outdated && !$input->getOption('upgradable')) {
+        if (count($outdated) && !$input->getOption('upgradable')) {
             $statusCode = 1;
 
             $io->columns($outdated);
             $io->newLine();
         }
 
-        if ($upgradable && !$input->getOption('outdated')) {
+        if (count($upgradable) && !$input->getOption('outdated')) {
             $statusCode = 1;
 
             $io->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
