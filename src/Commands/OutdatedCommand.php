@@ -63,7 +63,7 @@ final class OutdatedCommand extends Command
         $statusCode = 0;
 
         if (!count($packages)) {
-            $io->writeln('All dependencies match the latest package versions <info>:)</info>');
+            $io->writeln('All dependencies match the latest package versions <fg=green>:)</>');
             $io->newLine();
 
             return $statusCode;
