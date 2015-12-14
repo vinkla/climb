@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Vinkla\Climb\Ladder;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * This is the outdated command class.
@@ -22,7 +23,7 @@ use Vinkla\Climb\Ladder;
  * @author Vincent Klaiber <hello@vinkla.com>
  * @author Jens Segers <hello@jenssegers.com>
  */
-class OutdatedCommand extends Command
+final class OutdatedCommand extends Command
 {
     /**
      * Configure the outdated command.
@@ -50,14 +51,18 @@ class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new OutputStyle($input, $output);
+
         $formatClass = '\\Vinkla\\Climb\\Formatter\\'.ucfirst($input->getOption('format'));
         if (!class_exists($formatClass)) {
-            $output->error(sprintf('Output format "%s" is not supported', $input->getOption('format')));
+            $io->error(sprintf('Output format "%s" is not supported', $input->getOption('format')));
 
             return 1;
         }
 
-        $ladder = new Ladder($this->getComposerPathFromInput($input));
+        $composerPath = $this->getComposerPathFromInput($input);
+
+        $ladder = new Ladder($composerPath);
 
         $packages = $ladder->getOutdatedPackages();
 
@@ -83,7 +88,7 @@ class OutdatedCommand extends Command
         }
 
         $outputHandler = new $formatClass();
-        $outputHandler->render($output, $outdated, $upgradable);
+        $outputHandler->render($io, $outdated, $upgradable);
 
         if (count($outdated) || count($upgradable)) {
             return 1;

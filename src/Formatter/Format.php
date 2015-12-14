@@ -11,7 +11,7 @@
 
 namespace Vinkla\Climb\Formatter;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * Climb formatter interface.
@@ -23,9 +23,9 @@ interface Format
     /**
      * Produce final output.
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Vinkla\Climb\OutputStyle $output
      * @param array $outdated
      * @param array $upgradable
      */
-    public function render(OutputInterface $output, array $outdated = [], array $upgradable = []);
+    public function render(OutputStyle $output, array $outdated = [], array $upgradable = []);
 }

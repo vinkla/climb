@@ -11,7 +11,7 @@
 
 namespace Vinkla\Climb\Formatter;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * This is the console formatter.
@@ -23,12 +23,12 @@ class Console implements Format
     /**
      * {@inheritdoc}
      */
-    public function render(OutputInterface $output, array $outdated = [], array $upgradable = [])
+    public function render(OutputStyle $output, array $outdated = [], array $upgradable = [])
     {
         $output->newLine();
 
         if (!count($outdated) && !count($upgradable)) {
-            $output->writeln('All dependencies match the latest package versions <info>:)</info>');
+            $output->writeln('All dependencies match the latest package versions <fg=green>:)</>');
             $output->newLine();
 
             return;
@@ -36,12 +36,14 @@ class Console implements Format
 
         if (count($outdated)) {
             $output->columns($this->formatPackages($outdated, $output));
+            $output->newLine();
         }
 
         if (count($upgradable)) {
             $output->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
             $output->newLine();
             $output->columns($this->formatPackages($upgradable, $output));
+            $output->newLine();
         }
     }
 
@@ -49,11 +51,11 @@ class Console implements Format
      * Format packages information.
      *
      * @param array $packages
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param Vinkla\Climb\OutputStyle $output
      *
      * @return array
      */
-    private function formatPackages(array $packages, OutputInterface $output)
+    private function formatPackages(array $packages, OutputStyle $output)
     {
         return array_map(
             function (array $package) use ($output) {

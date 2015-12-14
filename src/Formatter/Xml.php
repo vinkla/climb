@@ -12,7 +12,7 @@
 namespace Vinkla\Climb\Formatter;
 
 use DOMDocument;
-use Symfony\Component\Console\Output\OutputInterface;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * This is the XML formatter.
@@ -24,23 +24,27 @@ class Xml implements Format
     /**
      * {@inheritdoc}
      */
-    public function render(OutputInterface $output, array $outdated = [], array $upgradable = [])
+    public function render(OutputStyle $output, array $outdated = [], array $upgradable = [])
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
 
         $climb = $dom->createElement('climb');
 
-        $outdatedElement = $dom->createElement('outdated');
-        foreach ($this->formatPackages($outdated, $dom) as $package) {
-            $outdatedElement->appendChild($package);
+        if (count($outdated)) {
+            $outdatedElement = $dom->createElement('outdated');
+            foreach ($this->formatPackages($outdated, $dom) as $package) {
+                $outdatedElement->appendChild($package);
+            }
+            $climb->appendChild($outdatedElement);
         }
-        $climb->appendChild($outdatedElement);
 
-        $upgradableElement = $dom->createElement('upgradable');
-        foreach ($this->formatPackages($upgradable, $dom) as $package) {
-            $upgradableElement->appendChild($package);
+        if (count($upgradable)) {
+            $upgradableElement = $dom->createElement('upgradable');
+            foreach ($this->formatPackages($upgradable, $dom) as $package) {
+                $upgradableElement->appendChild($package);
+            }
+            $climb->appendChild($upgradableElement);
         }
-        $climb->appendChild($upgradableElement);
 
         $dom->appendChild($climb);
 

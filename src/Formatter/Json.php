@@ -11,7 +11,7 @@
 
 namespace Vinkla\Climb\Formatter;
 
-use Symfony\Component\Console\Output\OutputInterface;
+use Vinkla\Climb\OutputStyle;
 
 /**
  * This is the JSON formatter.
@@ -23,12 +23,19 @@ class Json implements Format
     /**
      * {@inheritdoc}
      */
-    public function render(OutputInterface $output, array $outdated = [], array $upgradable = [])
+    public function render(OutputStyle $output, array $outdated = [], array $upgradable = [])
     {
-        $output->writeln(json_encode([
-            'outdated' => $this->formatPackages($outdated),
-            'upgradable' => $this->formatPackages($upgradable),
-        ]));
+        $packages = [];
+
+        if (count($outdated)) {
+            $packages['outdated'] = $this->formatPackages($outdated);
+        }
+
+        if (count($upgradable)) {
+            $packages['upgradable'] = $this->formatPackages($upgradable);
+        }
+
+        $output->writeln(count($packages) ? json_encode($packages) : '{}');
     }
 
     /**
@@ -43,8 +50,10 @@ class Json implements Format
         return array_map(
             function (array $package) {
                 return [
-                    'current' => $package[1],
-                    'latest' => $package[2],
+                    $package[0] => [
+                        'current' => $package[1],
+                        'latest' => $package[2],
+                    ],
                 ];
             },
             $packages

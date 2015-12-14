@@ -11,6 +11,8 @@
 
 namespace Vinkla\Tests\Climb\Commands;
 
+use ReflectionClass;
+use Vinkla\Climb\Commands\Command;
 use Vinkla\Tests\Climb\AbstractTestCase;
 
 /**
@@ -20,10 +22,21 @@ use Vinkla\Tests\Climb\AbstractTestCase;
  */
 abstract class AbstractCommandTestCase extends AbstractTestCase
 {
+    public function testClassIsFinal()
+    {
+        $command = new ReflectionClass($this->getCommand());
+        $this->assertTrue($command->isFinal());
+    }
+
     public function testConfiguration()
     {
         $this->assertNotEmpty($this->getCommand()->getName());
         $this->assertNotEmpty($this->getCommand()->getDescription());
+    }
+
+    public function testParent()
+    {
+        $this->assertInstanceOf(Command::class, $this->getCommand());
     }
 
     /**
