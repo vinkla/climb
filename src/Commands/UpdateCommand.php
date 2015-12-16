@@ -68,7 +68,7 @@ final class UpdateCommand extends Command
         $io->newLine();
 
         if (!count($packages)) {
-            $io->writeln('All dependencies match the latest package versions <fg=green>:)</>');
+            $io->write('All dependencies match the latest package versions <fg=green>:)</>');
             $io->newLine();
 
             return 1;
