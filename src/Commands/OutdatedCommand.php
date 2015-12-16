@@ -38,6 +38,7 @@ final class OutdatedCommand extends Command
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
         $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Only check outdated dependencies');
         $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Only check upgradable dependencies');
+        $this->addOption('exclude', null, InputOption::VALUE_REQUIRED, 'Exclude packages by their names (comma separated)');
         $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Output format', 'console');
     }
 
@@ -60,11 +61,17 @@ final class OutdatedCommand extends Command
             return 1;
         }
 
+        $excluded = [];
+
+        if ($input->getOption('exclude')) {
+            $excluded = explode(',', $input->getOption('exclude'));
+        }
+
         $composerPath = $this->getComposerPathFromInput($input);
 
         $ladder = new Ladder($composerPath);
 
-        $packages = $ladder->getOutdatedPackages();
+        $packages = $ladder->getOutdatedPackages($excluded);
 
         $outdated = [];
         $upgradable = [];

@@ -17,5 +17,6 @@
     "git-version": "package_version",
     "main": "bin/climb",
     "output": "climb.phar",
+    "compression": "GZ",
     "stub": true
 }
