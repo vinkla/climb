@@ -41,9 +41,11 @@ class Ladder
     /**
      * Get outdated packages with their current and latest version.
      *
+     * @param array $excluded
+     *
      * @return array
      */
-    public function getOutdatedPackages()
+    public function getOutdatedPackages(array $excluded = [])
     {
         // Get all installed and required packages.
         $installed = $this->composer->getInstalledPackages();
@@ -55,6 +57,10 @@ class Ladder
         $packages = array_intersect_key($installed, $required);
 
         foreach ($packages as $name => $version) {
+            if (in_array($name, $excluded)) {
+                continue;
+            }
+
             $package = new Package($name, Version::normalize($version), $required[$name]);
 
             if ($package->isOutdated()) {
