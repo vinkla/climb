@@ -38,7 +38,7 @@ final class OutdatedCommand extends Command
         $this->addOption('global', 'g', InputOption::VALUE_NONE, 'Run on globally installed packages');
         $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Only check outdated dependencies');
         $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Only check upgradable dependencies');
-        $this->addOption('exclude', null, InputOption::VALUE_REQUIRED, 'Packages to be excluded');
+        $this->addOption('exclude', null, InputOption::VALUE_REQUIRED, 'Exclude packages by their names (comma separated)');
     }
 
     /**
@@ -52,6 +52,7 @@ final class OutdatedCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $excluded = [];
+
         if ($input->getOption('exclude')) {
             $excluded = explode(',', $input->getOption('exclude'));
         }
