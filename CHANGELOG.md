@@ -4,7 +4,9 @@
 
 - Add Symfony 3.0 support
 - Add `--outdated` and `--upgradable` flags
+- Add `--exclude` flag
 - Add none-zero status codes for CI
+- Add gzip to the box config
 
 ## 0.7.0 (released 2015-11-28)
 
