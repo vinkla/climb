@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.8.0 (upcoming)
+## 0.8.0 (released 2015-12-21)
 
 - Add Symfony 3.0 support
 - Add `--outdated` and `--upgradable` flags
