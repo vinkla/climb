@@ -50,7 +50,13 @@ class Composer
             }
 
             foreach ($content[$key] as $package) {
-                $packages[$package['name']] = $package['version'];
+                $name = $package['name'];
+
+                $packages[$name] = [
+                    'name' => $name,
+                    'version' => $package['version'],
+                    'devDependency' => $key === 'packages-dev',
+                ];
             }
         }
 
@@ -79,12 +85,16 @@ class Composer
                 continue;
             }
 
-            foreach ($content[$key] as $package => $version) {
-                if (!strstr($package, '/')) {
+            foreach ($content[$key] as $name => $version) {
+                if (!strstr($name, '/')) {
                     continue;
                 }
 
-                $packages[$package] = $version;
+                $packages[$name] = [
+                    'name' => $name,
+                    'version' => $version,
+                    'devDependency' => $key === 'require-dev',
+                ];
             }
         }
 

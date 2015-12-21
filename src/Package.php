@@ -49,6 +49,13 @@ class Package
     protected $prettyVersion;
 
     /**
+     * The package dev dependency boolean.
+     *
+     * @var string
+     */
+    protected $devDependency;
+
+    /**
      * The Packagist instance.
      *
      * @var \Vinkla\Climb\Packagist
@@ -61,14 +68,16 @@ class Package
      * @param string $name
      * @param string $version
      * @param string $prettyVersion
+     * @param bool $devDependency
      *
      * @return void
      */
-    public function __construct($name, $version, $prettyVersion)
+    public function __construct($name, $version, $prettyVersion, $devDependency)
     {
         $this->name = $name;
         $this->version = $version;
         $this->prettyVersion = $prettyVersion;
+        $this->devDependency = $devDependency;
         $this->packagist = new Packagist();
     }
 
@@ -136,6 +145,16 @@ class Package
         $this->latestVersion = $this->packagist->getLatestVersion($this->name);
 
         return $this->latestVersion;
+    }
+
+    /**
+     * Get the package dev dependency boolean.
+     *
+     * @return string
+     */
+    public function getDevDependency()
+    {
+        return $this->devDependency;
     }
 
     /**

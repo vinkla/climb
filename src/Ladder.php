@@ -56,12 +56,17 @@ class Ladder
         // Get the installed version number of the required packages.
         $packages = array_intersect_key($installed, $required);
 
-        foreach ($packages as $name => $version) {
+        foreach ($packages as $package) {
+            $name = $package['name'];
+            $version = Version::normalize($package['version']);
+            $prettyVersion = $required[$name]['version'];
+            $devDependency = $package['devDependency'];
+
             if (in_array($name, $excluded)) {
                 continue;
             }
 
-            $package = new Package($name, Version::normalize($version), $required[$name]);
+            $package = new Package($name, $version, $prettyVersion, $devDependency);
 
             if ($package->isOutdated()) {
                 $outdated[] = $package;

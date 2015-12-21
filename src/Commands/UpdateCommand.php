@@ -79,9 +79,9 @@ final class UpdateCommand extends Command
 
         foreach ($packages as $package) {
             if ($package->isUpgradable()) {
-                $upgradable[$package->getName()] = $package->getLatestVersion();
+                $upgradable[$package->getName()] = $package;
             } else {
-                $outdated[$package->getName()] = $package->getLatestVersion();
+                $outdated[$package->getName()] = $package;
             }
         }
 
@@ -90,25 +90,28 @@ final class UpdateCommand extends Command
         }
 
         if (empty($upgradable)) {
-            $io->write('<comment>Nothing to install or update, did you forget the flag --all?</comment>');
-            $io->newLine();
+            $io->warning('Nothing to install or update, did you forget the flag --all?');
 
             return 1;
         }
 
-        foreach ($upgradable as $package => $version) {
-            $this->command .= " {$package}=^$version";
+        foreach ($upgradable as $package) {
+            $command = $input->getOption('global') ? 'composer global require' : 'composer require';
+
+            $command .= sprintf(' %s=^%s', $package->getName(), $package->getLatestVersion());
+
+            if ($package->getDevDependency()) {
+                $command .= ' --dev';
+            }
+
+            $process = new Process($command, $composerPath, array_merge($_SERVER, $_ENV), null, null);
+
+            $process->run(function ($type, $line) use ($io) {
+                $io->write($line);
+            });
+
+            $io->newLine();
         }
-
-        $command = $input->getOption('global') ? 'composer global require' : 'composer require';
-
-        $process = new Process($command, $composerPath, array_merge($_SERVER, $_ENV), null, null);
-
-        $io->newLine();
-
-        $process->run(function ($type, $line) use ($io) {
-            $io->write($line);
-        });
 
         return 0;
     }

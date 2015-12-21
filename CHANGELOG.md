@@ -7,6 +7,7 @@
 - Add `--exclude` flag
 - Add none-zero status codes for CI
 - Add gzip to the box config
+- Fix update require dev bug
 
 ## 0.7.0 (released 2015-11-28)
 

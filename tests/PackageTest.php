@@ -24,41 +24,47 @@ class PackageTest extends AbstractTestCase
 {
     public function testName()
     {
-        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
+        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0', false);
         $this->assertSame('vinkla/climb', $package->getName());
     }
 
     public function testVersion()
     {
-        $package = new Package('vinkla/climb', '2.0.0', '^2.0.0');
+        $package = new Package('vinkla/climb', '2.0.0', '^2.0.0', false);
         $this->assertSame('2.0.0', $package->getVersion());
     }
 
     public function testPrettyVersion()
     {
-        $package = new Package('vinkla/climb', '3.0.0', '^3.0.0');
+        $package = new Package('vinkla/climb', '3.0.0', '^3.0.0', false);
         $this->assertSame('^3.0.0', $package->getPrettyVersion());
+    }
+
+    public function testDevDependency()
+    {
+        $package = new Package('vinkla/climb', '3.0.0', '^3.0.0', false);
+        $this->assertFalse($package->getDevDependency());
     }
 
     public function testLatestVersion()
     {
         $packagist = Mockery::mock(Packagist::class);
         $packagist->shouldReceive('getLatestVersion')->once()->andReturn('2.0.0');
-        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0');
+        $package = new Package('vinkla/climb', '1.0.0', '^1.0.0', false);
         $package->setPackagist($packagist);
         $this->assertSame('2.0.0', $package->getLatestVersion());
     }
 
     public function testIsOutdated()
     {
-        $package = Mockery::mock(Package::class, ['vinkla/climb', '1.0.0', '^1.0.0'])->makePartial();
+        $package = Mockery::mock(Package::class, ['vinkla/climb', '1.0.0', '^1.0.0', false])->makePartial();
         $package->shouldReceive('getLatestVersion')->once()->andReturn('2.0.0');
         $this->assertTrue($package->isOutdated());
     }
 
     public function testIsUpgradeable()
     {
-        $package = Mockery::mock(Package::class, ['vinkla/climb', '1.5.0', '^1.5.0'])->makePartial();
+        $package = Mockery::mock(Package::class, ['vinkla/climb', '1.5.0', '^1.5.0', false])->makePartial();
         $package->shouldReceive('getLatestVersion')->once()->andReturn('1.7.0');
         $this->assertTrue($package->isUpgradable());
     }
