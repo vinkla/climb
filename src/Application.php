@@ -29,7 +29,7 @@ class Application extends Console
      */
     public function __construct()
     {
-        parent::__construct('Climb', '0.8.0');
+        parent::__construct('Climb', '0.8.1');
 
         $this->add(new OutdatedCommand());
         $this->add(new UpdateCommand());

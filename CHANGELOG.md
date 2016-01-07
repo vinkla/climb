@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.8.1 (released 2016-01-07)
+
+- Bump version number
+
 ## 0.8.0 (released 2015-12-21)
 
 - Add Symfony 3.0 support

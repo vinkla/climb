@@ -34,7 +34,7 @@ brew install homebrew/php/climb
 You can run the commands below to easily access `climb` from anywhere on your system.
 
 ```bash
-wget https://github.com/vinkla/climb/releases/download/0.7.0/climb.phar
+wget https://github.com/vinkla/climb/releases/download/0.8.1/climb.phar
 chmod +x climb
 sudo mv climb.phar /usr/local/bin/climb
 climb --version
@@ -43,7 +43,7 @@ climb --version
 You may also use the downloaded `PHAR` file directly:
 
 ```bash
-wget https://github.com/vinkla/climb/releases/download/0.7.0/climb.phar
+wget https://github.com/vinkla/climb/releases/download/0.8.1/climb.phar
 php climb.phar --version
 ```
 
