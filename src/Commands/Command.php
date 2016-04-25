@@ -37,7 +37,5 @@ class Command extends BaseCommand
         if ($input->getOption('global')) {
             return getenv('HOME').'/.composer';
         }
-
-        return;
     }
 }
