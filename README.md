@@ -1,3 +1,11 @@
+## WARNING! This package is no longer maintained!
+
+This is now added to Composer, please use the [composer outdated command](https://medium.com/@vinkla/find-outdated-packages-with-composer-968828c1d80a) instead.
+
+```sh
+composer outdated --outdated
+```
+
 # Composer Climb
 
 ![climb](https://cloud.githubusercontent.com/assets/499192/11169131/34667b2c-8baf-11e5-99d7-88c2e4cb0330.png)
