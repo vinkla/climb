@@ -1,4 +1,4 @@
-## WARNING! This package is no longer maintained!
+## WARNING! This package is no longer maintained.
 
 This is now added to Composer, please use the [composer outdated command](https://vinkla.com/2016/composer-outdated/) instead.
 
