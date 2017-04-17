@@ -39,6 +39,7 @@ final class OutdatedCommand extends Command
         $this->addOption('outdated', null, InputOption::VALUE_NONE, 'Only check outdated dependencies');
         $this->addOption('upgradable', null, InputOption::VALUE_NONE, 'Only check upgradable dependencies');
         $this->addOption('exclude', null, InputOption::VALUE_REQUIRED, 'Exclude packages by their names (comma separated)');
+        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Output format', 'console');
     }
 
     /**
@@ -51,13 +52,20 @@ final class OutdatedCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new OutputStyle($input, $output);
+
+        $formatClass = '\\Vinkla\\Climb\\Formatter\\'.ucfirst($input->getOption('format'));
+        if (!class_exists($formatClass)) {
+            $io->error(sprintf('Output format "%s" is not supported', $input->getOption('format')));
+
+            return 1;
+        }
+
         $excluded = [];
 
         if ($input->getOption('exclude')) {
             $excluded = explode(',', $input->getOption('exclude'));
         }
-
-        $io = new OutputStyle($input, $output);
 
         $composerPath = $this->getComposerPathFromInput($input);
 
@@ -65,46 +73,34 @@ final class OutdatedCommand extends Command
 
         $packages = $ladder->getOutdatedPackages($excluded);
 
-        $io->newLine();
-
-        $statusCode = 0;
-
-        if (!count($packages)) {
-            $io->writeln('All dependencies match the latest package versions <fg=green>:)</>');
-            $io->newLine();
-
-            return $statusCode;
-        }
-
         $outdated = [];
         $upgradable = [];
 
         foreach ($packages as $package) {
-            $diff = $io->versionDiff($package->getVersion(), $package->getLatestVersion());
-
             if ($package->isUpgradable()) {
-                $upgradable[] = [$package->getName(), $package->getVersion(), '→', $diff];
-            } else {
-                $outdated[] = [$package->getName(), $package->getVersion(), '→', $diff];
+                if (!$input->getOption('outdated')) {
+                    $upgradable[] = [
+                        $package->getName(),
+                        $package->getVersion(),
+                        $package->getLatestVersion(),
+                    ];
+                }
+            } elseif (!$input->getOption('upgradable')) {
+                $outdated[] = [
+                    $package->getName(),
+                    $package->getVersion(),
+                    $package->getLatestVersion(),
+                ];
             }
         }
 
-        if (count($outdated) && !$input->getOption('upgradable')) {
-            $statusCode = 1;
+        $outputHandler = new $formatClass();
+        $outputHandler->render($io, $outdated, $upgradable);
 
-            $io->columns($outdated);
-            $io->newLine();
+        if (count($outdated) || count($upgradable)) {
+            return 1;
         }
 
-        if (count($upgradable) && !$input->getOption('outdated')) {
-            $statusCode = 1;
-
-            $io->writeln('The following dependencies are satisfied by their declared version constraint, but the installed versions are behind. You can install the latest versions without modifying your composer.json file by using <fg=blue>composer update</>.');
-            $io->newLine();
-            $io->columns($upgradable);
-            $io->newLine();
-        }
-
-        return $statusCode;
+        return 0;
     }
 }
