@@ -1,12 +1,4 @@
-## WARNING! This package is no longer maintained.
-
-This is now added to Composer, please use the [composer outdated command](https://vinkla.com/2016/composer-outdated/) instead.
-
-```sh
-composer outdated --outdated
-```
-
-# Composer Climb
+# Climb
 
 ![climb](https://cloud.githubusercontent.com/assets/499192/11169131/34667b2c-8baf-11e5-99d7-88c2e4cb0330.png)
 
@@ -19,11 +11,11 @@ jenssegers/optimus              0.1.4      →     0.2.0
 vinkla/hashids                  1.1.0      →     2.2.0
 ```
 
-[![Build Status](https://img.shields.io/travis/vinkla/climb/master.svg?style=flat)](https://travis-ci.org/vinkla/climb)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/vinkla/climb.svg?style=flat)](https://scrutinizer-ci.com/g/vinkla/climb/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/g/vinkla/climb.svg?style=flat)](https://scrutinizer-ci.com/g/vinkla/climb)
-[![Latest Version](https://img.shields.io/github/release/vinkla/climb.svg?style=flat)](https://github.com/vinkla/climb/releases)
-[![License](https://img.shields.io/packagist/l/vinkla/climb.svg?style=flat)](https://packagist.org/packages/vinkla/climb)
+This is now added to Composer, please use [outdated command](https://getcomposer.org/doc/03-cli.md#outdated) instead.
+
+```sh
+composer outdated --outdated
+```
 
 ## Installation
 
